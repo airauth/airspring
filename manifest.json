@@ -3,6 +3,10 @@
 
   "name": "Air.Auth",
   "description": "Leap Motion Powered Keychain for Chrome",
+  "icons": { "16": "icon.png",
+             "48": "icon48.png",
+             "128": "icon128.png"
+  },
   "version": "1.0",
   "background": {
       "scripts": [ "background.js" ]
