@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Auth Ready</title>
+</head>
+<body>
+	<div id="output"></div>
+	<script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="leap-0.6.0-beta2.js"></script>
+	<script type="text/javascript" src="air-spring.js"></script>
+	<script type="text/javascript">
+		var ret;
+		Leap.loop(function (frame) {
+			ret = auth_ready(frame);
+    		$("#output").html(ret);
+ 		 });
+	</script>
+</body>
+</html>
