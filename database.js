@@ -34,6 +34,8 @@ airspring.indexedDB.addHandData = function(frame) {
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
 
+  console.log("Adding Data");
+
   var request = store.put({
     "valid" : frame.hands[0].valid,
     "handType" : frame.hands[0].type,
@@ -114,6 +116,54 @@ airspring.indexedDB.getHandData = function() {
   cursorRequest.onerror = airspring.indexedDB.onerror;
 };
 
+airspring.indexedDB.calcAvg = function() {
+
+  var db = airspring.indexedDB.db;
+  var trans = db.transaction(["airspring_handdata"], "readwrite");
+  var store = trans.objectStore("airspring_handdata");
+
+  var keyRange = IDBKeyRange.lowerBound(0);
+  var cursorRequest = store.openCursor(keyRange);
+  
+  var total = [];
+  for (var i = 0; i < 46; i++) { total[i] = 0; }
+  var count = 0;
+
+  cursorRequest.onsuccess = function(e) {
+    var result = e.target.result;
+    if(!!result == false) { 
+      for (var i = 2; i < total.length; i++) { 
+      total[i] = total[i]/count;
+      }
+      console.log(total);
+      return;
+    }
+
+    ++count; 
+
+    var data = [];
+  
+    for(var x in result.value){
+      data.push(result.value[x]);
+    }
+
+    total[0] = data[0];
+    total[1] = data[1];
+
+    for (var i = 2; i < data.length; i++) { 
+      total[i] += data[i];
+    }
+
+
+    //console.log(result);
+    //console.log(total)
+    result.continue();
+  };
+
+  cursorRequest.onerror = airspring.indexedDB.onerror;
+  return total;
+}
+
 function init() {
   airspring.indexedDB.open("hand_data"); // open displays the data previously saved
 }
@@ -125,5 +175,11 @@ function addHandData(frame) {
 }  
 
 function deleteDB(dbname){
-  window.indexedDB.deleteDatabase(dbname);
+  var req = indexedDB.deleteDatabase(dbname);
+  req.onsuccess = function () {
+    console.log("Deleted database successfully");
+  };
+  req.onerror = function () {
+    console.log("Couldn't delete database");
+  }
 }
