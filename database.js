@@ -33,12 +33,53 @@ airspring.indexedDB.addHandData = function(frame) {
   var db = airspring.indexedDB.db;
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
-  //var hand = frame.hands[0];
 
-
-  console.log(frame.hands[0].valid);
   var request = store.put({
     "valid" : frame.hands[0].valid,
+    "handType" : frame.hands[0].type,
+    "indexLenght" : frame.hands[0].indexFinger.length,
+    "indexMetacarpalLenght" : frame.hands[0].indexFinger.metacarpal.length,
+    "indexMetacarpalWidth" : frame.hands[0].indexFinger.metacarpal.width,
+    "indexProximalLenght" : frame.hands[0].indexFinger.proximal.length,
+    "indexProximalWidth" : frame.hands[0].indexFinger.proximal.width,
+    "indexIntermediateLenght" : frame.hands[0].indexFinger.medial.length,
+    "indexIntermediateWidth" : frame.hands[0].indexFinger.medial.width,
+    "indexDistalLenght" : frame.hands[0].indexFinger.distal.length,
+    "indexDistalWidth" : frame.hands[0].indexFinger.distal.width,
+    "middleLenght" : frame.hands[0].middleFinger.length,
+    "middleMetacarpalLenght" : frame.hands[0].middleFinger.metacarpal.length,
+    "middleMetacarpalWidth" : frame.hands[0].middleFinger.metacarpal.width,
+    "middleProximalLenght" : frame.hands[0].middleFinger.proximal.length,
+    "middleProximalWidth" : frame.hands[0].middleFinger.proximal.width,
+    "middleIntermediateLenght" : frame.hands[0].middleFinger.medial.length,
+    "middleIntermediateWidth" : frame.hands[0].middleFinger.medial.width,
+    "middleDistalLenght" : frame.hands[0].middleFinger.distal.length,
+    "middleDistalWidth" : frame.hands[0].middleFinger.distal.width,
+    "ringLenght" : frame.hands[0].ringFinger.length,
+    "ringMetacarpalLenght" : frame.hands[0].ringFinger.metacarpal.length,
+    "ringMetacarpalWidth" : frame.hands[0].ringFinger.metacarpal.width,
+    "ringProximalLenght" : frame.hands[0].ringFinger.proximal.length,
+    "ringProximalWidth" : frame.hands[0].ringFinger.proximal.width,
+    "ringIntermediateLenght" : frame.hands[0].ringFinger.medial.length,
+    "ringIntermediateWidth" : frame.hands[0].ringFinger.medial.width,
+    "ringDistalLenght" : frame.hands[0].ringFinger.distal.length,
+    "ringDistalWidth" : frame.hands[0].ringFinger.distal.width,
+    "pinkyLenght" : frame.hands[0].pinky.length,
+    "pinkyMetacarpalLenght" : frame.hands[0].pinky.metacarpal.length,
+    "pinkyMetacarpalWidth" : frame.hands[0].pinky.metacarpal.width,
+    "pinkyProximalLenght" : frame.hands[0].pinky.proximal.length,
+    "pinkyProximalWidth" : frame.hands[0].pinky.proximal.width,
+    "pinkyIntermediateLenght" : frame.hands[0].pinky.medial.length,
+    "pinkyIntermediateWidth" : frame.hands[0].pinky.medial.width,
+    "pinkyDistalLenght" : frame.hands[0].pinky.distal.length,
+    "pinkyDistalWidth" : frame.hands[0].pinky.distal.width,
+    "thumbLenght" : frame.hands[0].thumb.length,
+    "thumbProximalLenght" : frame.hands[0].thumb.proximal.length,
+    "thumbProximalWidth" : frame.hands[0].thumb.proximal.width,
+    "thumbIntermediateLenght" : frame.hands[0].thumb.medial.length,
+    "thumbIntermediateWidth" : frame.hands[0].thumb.medial.width,
+    "thumbDistalLenght" : frame.hands[0].thumb.distal.length,
+    "thumbDistalWidth" : frame.hands[0].thumb.distal.width,
     "timeStamp" : new Date().getTime()
   });
 
