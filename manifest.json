@@ -29,7 +29,7 @@
     "content_scripts": [
     {
       "matches": ["http://www.google.com/*"],
-      "js": ["assets/js/jquery-1.10.2.min.js", "assets/js/bootstrap.min.js", "assets/js/ejs.js", "assets/js/templates.js" ,"leap-0.6.0-beta2.js", "air-spring.js"]
+      "js": ["assets/js/jquery-1.10.2.min.js", "assets/js/bootstrap.min.js", "assets/js/ejs.js", "assets/js/templates.js" ,"leap-0.6.0.js", "air-spring.js"]
     }
   ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
