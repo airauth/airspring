@@ -2,6 +2,32 @@
     text-align: center;
 }
 
-.footer-icon {
+.header-icon {
+    text-align: center;
+}
+
+.header-img {
+    width: 70px;
+}
+.airauth-login-btn {
+    width: 100%;
+}
+
+.or {
+    line-height: 40px;
+    width: 45px;
+    font-size: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    border-radius: 1000px;
+    border: 2px solid #e1e6e9;
+    margin: 25px auto;
+}
+
+.airauth-register-btn {
+    width: 100%;
+}
+
+footer p {
     text-align: center;
 }

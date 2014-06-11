@@ -1,0 +1,109 @@
+$("#inputRePassword").change(function(){
+              
+              var pswd_ag = $(this).val();
+              if ( pswd_ag.length < 5 ) {
+                           $(this).parent().addClass('has-error');
+                           $("#inputPassword").parent().addClass('has-error');
+                           $('#register-btn').attr( 'disabled', true );
+              }
+              else{
+                            $("#error").hide();
+                            $("#inputRePassword").keyup(function () {
+                                       if( $(this).val() != $("#inputPassword").val() ){
+                                             $(this).parent().removeClass('has-error');
+                                             $("#inputPassword").parent().removeClass('has-error');
+                                             
+                                             $(this).parent().addClass('has-error');
+                                             $("#inputPassword").parent().addClass('has-error');
+                                             
+                                             $('#register-btn').attr( 'disabled', true );
+                                             
+                                             $(this).parent().removeClass('has-success');
+                                             $("#inputPassword").parent().removeClass('has-success');
+                                             
+                                       }
+                                       else{
+                                           $(this).parent().removeClass('has-success');
+                                           $("#inputPassword").parent().removeClass('has-error');
+                                           
+                                           $('#register-btn').removeAttr('disabled');
+                                           
+                                           $(this).parent().addClass('has-success');
+                                           $("#inputPassword").parent().addClass('has-success');
+                                       }
+                                     }).keyup();       
+              }});
+            
+            $("#inputPassword").change(function(){
+              var pswd = $(this).val();
+              if ( pswd.length < 5 ) {
+                           $(this).parent().addClass('has-error');
+                           $("#inputPassword").parent().addClass('has-error');
+                           $('#register-btn').attr( 'disabled', true );
+              }
+              else{
+                            $("#error").hide();
+              
+                            $("#inputPassword").keyup(function () {
+                                              if( $(this).val() != $("#inputRePassword").val() ){
+                                                    $(this).parent().removeClass('has-error');
+                                                    $("#inputRePassword").parent().removeClass('has-error');
+                                                    
+                                                    $(this).parent().addClass('has-error');
+                                                    $("#inputRePassword").parent().addClass('has-error');
+                                                    
+                                                    $('#register-btn').attr( 'disabled', true );
+                                                    
+                                                    $(this).parent().removeClass('has-success');
+                                                    $("#inputRePassword").parent().removeClass('has-success');
+                                                    
+                                              }
+                                              else{
+                                                  $(this).parent().removeClass('has-success');
+                                                  $("#inputRePassword").parent().removeClass('has-error');
+                                                  
+                                                  $('#register-btn').removeAttr('disabled');
+                                                  
+                                                  $(this).parent().addClass('has-success');
+                                                  $("#inputRePassword").parent().addClass('has-success');
+                                              }
+                                            }).keyup();
+              }});
+            
+            
+            
+            
+            
+            
+// User registration
+$('#user-registration').submit(function() {
+    var data = $('#user-registration').serialize();         
+    // Get registration form data
+    var url = "http://airauth.cloudnode.co/api/user/signup";
+          $.ajax({ 
+              url: url
+            , data: data
+            , complete: function() {
+                  console.log("Submitted!"); 
+            },
+
+            success: function(resData) {
+                  console.log(resData);
+                  // Create a new object store
+                  // var request = window.indexedDB.open("airspringUserStore", 2);
+             },
+
+            error: function(error) {
+               console.log(error.responseText);
+             },
+          });
+          
+              
+    
+    console.log($('#user-registration').serialize());
+    return false;
+
+});
+            
+            
+            
