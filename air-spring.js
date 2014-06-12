@@ -20,12 +20,12 @@ function auth_ready(frame, count) {
 			else if (hand.palmPosition[0] < -50) {
 				ret = ["Hand Too Far Left", 0];
 			}
-			else if (hand.palmPosition[1] > 150) {
+			/*else if (hand.palmPosition[1] > 120) {
 				ret = ["Hand Too High", 0];
 			}
-			else if (hand.palmPosition[1] < 100) {
+			else if (hand.palmPosition[1] < 110) {
 				ret = ["Hand Too Low", 0];
-			}
+			}*/
 			else if (hand.palmPosition[2] < -50) {
 				ret = ["Hand Too Far From Body", 0];
 			}
@@ -55,7 +55,7 @@ function auth_ready(frame, count) {
 	if(ret[1] == 1){
 		if(count < 200){
 			++count;
-			ret = ["Passed", count];
+			ret = ["Gathering", count];
 			addHandData(frame);
 		}else{
 			ret = ["Gathered All Data!", count];
@@ -74,4 +74,69 @@ function count_extended_fingers(hand) {
 		}
 	}
 	return extended;
+}
+
+
+
+
+function generateChart(data, div_id){
+	console.log(data);
+	var highcharts_data = {
+                    chart: {
+                        zoomType: 'x'
+                    },
+                    title: {
+                        text: 'Air.Auth Hand Data Visualization'
+                    },
+                    subtitle: {
+                        text: document.ontouchstart === undefined ?
+                            'Click and drag in the plot area to zoom in' :
+                            'Pinch the chart to zoom in'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        minRange: 14 * 24 * 3600000 // fourteen days
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Exchange rate'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                                stops: [
+                                    [0, Highcharts.getOptions().colors[0]],
+                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            marker: {
+                                radius: 2
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        }
+                    },
+            
+                    series: [{
+                        type: 'area',
+                        name: 'USD to EUR',
+                        pointInterval: 24 * 3600 * 1000,
+                        pointStart: Date.UTC(2006, 0, 01),
+                        data: data
+                    }]
+                };
+
+  $(function () {
+          $(div_id).highcharts(highcharts_data);
+      });
 }

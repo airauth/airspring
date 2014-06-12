@@ -23,7 +23,6 @@ airspring.indexedDB.open = function(dbname) {
 
   request.onsuccess = function(e) {
     airspring.indexedDB.db = e.target.result;
-    airspring.indexedDB.getHandData();
   };
 
   request.onerror = airspring.indexedDB.onerror;
@@ -88,6 +87,13 @@ airspring.indexedDB.addHandData = function(frame) {
   request.onsuccess = function(e) {
     // Re-render all the todo's
     //airspring.indexedDB.getHandData();
+    console.log(frame.hands[0].id);
+    console.log("metacarpal: " + frame.hands[0].indexFinger.metacarpal.length);
+    console.log("proximal: " + frame.hands[0].indexFinger.proximal.length);
+    console.log("medial: " + frame.hands[0].indexFinger.medial.length);
+    console.log("distal: " + frame.hands[0].indexFinger.distal.length);
+    console.log("Total indexFinger: " + frame.hands[0].indexFinger.length);
+    console.log(frame.hands[0]);
   };
 
   request.onerror = function(e) {
@@ -116,6 +122,40 @@ airspring.indexedDB.getHandData = function() {
   cursorRequest.onerror = airspring.indexedDB.onerror;
 };
 
+airspring.indexedDB.getFrameDB = function(index) {
+
+  var db = airspring.indexedDB.db;
+  var trans = db.transaction(["airspring_handdata"], "readwrite");
+  var store = trans.objectStore("airspring_handdata");
+
+  var keyRange = IDBKeyRange.lowerBound(index);
+  var cursorRequest = store.openCursor(keyRange);
+  
+  var data = [];
+  for (var i = 0; i < 100; i++) { data[i] = 0; }
+  var i = 0;
+
+  cursorRequest.onsuccess = function(e) {
+    var result = e.target.result;
+    if(!!result == false) { 
+      generateChart(data, "#container");
+      return;
+    }
+
+    data[i++] = result.value.indexProximalLenght;
+    //console.log(data);
+
+    result.continue();
+
+  };
+
+
+  cursorRequest.onerror = airspring.indexedDB.onerror;
+  
+
+  return;
+};
+
 airspring.indexedDB.calcAvg = function() {
 
   var db = airspring.indexedDB.db;
@@ -135,7 +175,7 @@ airspring.indexedDB.calcAvg = function() {
       for (var i = 2; i < total.length; i++) { 
       total[i] = total[i]/count;
       }
-      console.log(total);
+      // console.log(total);
       return;
     }
 
@@ -172,7 +212,11 @@ window.addEventListener("DOMContentLoaded", init, false);
 
 function addHandData(frame) {
   airspring.indexedDB.addHandData(frame);
-}  
+} 
+
+function getFrameDB() {
+  airspring.indexedDB.getFrameDB(0);
+}
 
 function deleteDB(dbname){
   var req = indexedDB.deleteDatabase(dbname);
