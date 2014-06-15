@@ -73,18 +73,66 @@
     </div>
     <script type="text/javascript">
       var progressbar = $('.progress-bar');
-      deleteDB('hand_data');
+      //deleteDB('hand_data');
 
       var ret = ["hello", 0];
 
+      var one = 0;
+
       var controller = Leap.loop(function (frame) {
-        console.log(frame)
-        //controller.disconnect();
+        
+
 
         if(ret[1]<100){
-          controller.disconnect();
           ret = auth_ready(frame, ret[1]);
-          //if(ret[1] != 0) {$("#Message").html(ret[0]);}
+
+        if (one == 0 && ret[1] == 1) {
+          one++;
+          var array = [];
+          array[0] = frame.hands[0].indexFinger.metacarpal.length,
+          array[1] = frame.hands[0].indexFinger.metacarpal.width,
+          array[2] = frame.hands[0].indexFinger.proximal.length,
+          array[3] = frame.hands[0].indexFinger.proximal.width,
+          array[4] = frame.hands[0].indexFinger.medial.length,
+          array[4] = frame.hands[0].indexFinger.medial.width,
+          array[5] = frame.hands[0].indexFinger.distal.length,
+          array[6] = frame.hands[0].indexFinger.distal.width,
+          array[7] = frame.hands[0].middleFinger.metacarpal.length,
+          array[8] = frame.hands[0].middleFinger.metacarpal.width,
+          array[9] = frame.hands[0].middleFinger.proximal.length,
+          array[10] = frame.hands[0].middleFinger.proximal.width,
+          array[11] = frame.hands[0].middleFinger.medial.length,
+          array[12] = frame.hands[0].middleFinger.medial.width,
+          array[13] = frame.hands[0].middleFinger.distal.length,
+          array[14] = frame.hands[0].middleFinger.distal.width,
+          array[15] = frame.hands[0].ringFinger.metacarpal.length,
+          array[16] = frame.hands[0].ringFinger.metacarpal.width,
+          array[17] = frame.hands[0].ringFinger.proximal.length,
+          array[18] = frame.hands[0].ringFinger.proximal.width,
+          array[19] = frame.hands[0].ringFinger.medial.length,
+          array[20] = frame.hands[0].ringFinger.medial.width,
+          array[21] = frame.hands[0].ringFinger.distal.length,
+          array[22] = frame.hands[0].ringFinger.distal.width,
+          array[23] = frame.hands[0].pinky.metacarpal.length,
+          array[24] = frame.hands[0].pinky.metacarpal.width,
+          array[25] = frame.hands[0].pinky.proximal.length,
+          array[26] = frame.hands[0].pinky.proximal.width,
+          array[27] = frame.hands[0].pinky.medial.length,
+          array[28] = frame.hands[0].pinky.medial.width,
+          array[29] = frame.hands[0].pinky.distal.length,
+          array[30] = frame.hands[0].pinky.distal.width,
+          array[31] = frame.hands[0].thumb.proximal.length,
+          array[32] = frame.hands[0].thumb.proximal.width,
+          array[33] = frame.hands[0].thumb.medial.length,
+          array[34] = frame.hands[0].thumb.medial.width,
+          array[35] = frame.hands[0].thumb.distal.length,
+          array[36] = frame.hands[0].thumb.distal.width,
+          console.log(array);
+          addHandData2(array);
+          airspring.indexedDB.calcAvg();
+          //console.log(frame);
+          
+        }
 
           switch(ret[0]) {
               case "5 Fingers Not Showing":
@@ -199,13 +247,9 @@
           $("#Message").html("Complete");
 
           ret[1] = 101;
-          airspring.indexedDB.calcAvg();
-          getFrameDB();
+          //airspring.indexedDB.calcAvg();
+          //getFrameDB();
         }
-        
-
-        controller.disconnect();
-        //controller.connect();
       });
     </script>
 
