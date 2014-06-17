@@ -20,10 +20,10 @@ function auth_ready(frame, count) {
 			else if (hand.palmPosition[0] < -50) {
 				ret = ["Hand Too Far Left", 0];
 			}
-			else if (hand.palmPosition[1] > 115) {
+			else if (hand.palmPosition[1] > 135) {
 				ret = ["Hand Too High", 0];
 			}
-			else if (hand.palmPosition[1] < 110) {
+			else if (hand.palmPosition[1] < 115) {
 				ret = ["Hand Too Low", 0];
 			}
 			else if (hand.palmPosition[2] < -50) {
@@ -53,10 +53,11 @@ function auth_ready(frame, count) {
 		}
 	}
 	if(ret[1] == 1){
-		if(count < 200){
+		if(count < 20){
 			++count;
 			ret = ["Gathering", count];
-			//add hand data here
+			//console.log(frame);
+			addHandData(frame);
 		}else{
 			ret = ["Gathered All Data!", count];
 		}
