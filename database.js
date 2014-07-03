@@ -197,36 +197,47 @@ airspring.indexedDB.calcAvg_registration = function() {
   var data_total = [];
 
   var keyRange = IDBKeyRange.lowerBound(0);
-  var cursorRequest = store.openCursor(keyRange);
+ 
   
   //Array to store the total of all samples
   var current_total = [];
   var total = [];
-
   //Initialize to zeros
   for (var i = 0; i < 9; i++) { current_total[i] = 0; }
-
   var count = 0;
   var total_index = 0;
+
+  //Request open
+  var cursorRequest = store.openCursor(keyRange);
 
   cursorRequest.onsuccess = function(e) {
     
     var result = e.target.result;
     
-    if(!!result == false) { 
-      /*for (var i = 0; i < total.length; i++) { 
-        total[i] = total[i]/10;
-      }*/
-      
+    //No more in DataBase
+    if(!!result == false) {       
       console.log(total); 
       return;
     }
-    console.log("dbCount", count);
+
+
+    //console.log("dbCount", count);
     if (count == 20 || count == 40 || count == 60 || count == 80 || count == 99) {
+      //console.log("Current Total Length = ", current_total.length);
       for (var i = 0; i < current_total.length; i++) { 
         current_total[i] = current_total[i]/10;
       }
-      total[total_index] = current_total;
+      total[total_index] = {
+        "indexMedialLength" : current_total[0],
+        "indexDistalLength" : current_total[1],
+        "middleMedialLength" : current_total[2],
+        "middleDistalLength" : current_total[3],
+        "ringMedialLength" : current_total[4],
+        "ringDistalLength" : current_total[5],
+        "pinkyMedialLength" : current_total[6],
+        "pinkyDistalLength" : current_total[7],
+        "thumbDistalLength" : current_total[8],
+      }
       total_index++;
       for (var i = 0; i < 9; i++) { current_total[i] = 0; }
     }
@@ -236,6 +247,8 @@ airspring.indexedDB.calcAvg_registration = function() {
     for(var x in result.value){
       data.push(result.value[x]);
     }
+
+    
 
     if(count > 4 && count < 15){
     
