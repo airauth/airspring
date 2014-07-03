@@ -5,6 +5,7 @@ deleteDB('hand_data');
 var progressbar = $('.progress-bar');
 var ret = ["AirSpring", 0, 0];
 var scan = true;
+var handLeave = false;
 var prev_hand_id;
 
 var controller = Leap.loop(function (frame) {
@@ -15,21 +16,28 @@ var controller = Leap.loop(function (frame) {
             //console.log("Cur", frame.hands[0].id);
             //console.log(ret[2]);
             if (!frame.hands[0]) {
-                console.log("Here");
-                scan = true;
+                //console.log("No hand detected");
+                handLeave = true;
+            }
+            if(frame.hands[0] && handLeave == true){
+              //console.log("New Hand detected");
+              handLeave = false;
+              ret[2] = 0;
+              scan = true;
             }
         }
             
     if (frame.hands[0]) {
+      //console.log("Here1234");
         
       if(ret[1]<100 && scan == true){
-        console.log("In");
+        //console.log("In");
         
-        prev_hand_id = frame.hands[0].id;
+        //prev_hand_id = frame.hands[0].id;
         //console.log(frame.hands[0].id);
         
         ret = auth_ready(frame, ret[1]);
-        console.log(ret);
+        //console.log(ret);
     
         switch(ret[0]) {
           case "5 Fingers Not Showing":
@@ -120,23 +128,23 @@ var controller = Leap.loop(function (frame) {
           progressbar.css("width", "99%");
           $(".progress-bar").html("99%");
         }
-        if (ret[1] == 20){
-          ret[1]++;
+        if (ret[1] == 20 && ret[2] == 1){
+          //ret[1]++;
           scan = false;
           show_message("hand-alerts", 'success', 'Remove and place your hand over the leap device'); 
         }
-        if (ret[1] == 40){
-          ret[1]++;
+        if (ret[1] == 40 && ret[2] == 1){
+          //ret[1]++;
           scan = false;
           show_message("hand-alerts", 'success', 'Remove and place your hand over the leap device');
         }
-        if (ret[1] == 60){
-          ret[1]++;
+        if (ret[1] == 60 && ret[2] == 1){
+          //ret[1]++;
           scan = false;
           show_message("hand-alerts", 'success', 'Remove and place your hand over the leap device'); 
         }
-        if (ret[1] == 80){
-          ret[1]++;
+        if (ret[1] == 80 && ret[2] == 1){
+          //ret[1]++;
           scan = false;
           show_message("hand-alerts", 'success', 'Remove and place your hand over the leap device'); 
         }
@@ -147,7 +155,6 @@ var controller = Leap.loop(function (frame) {
           ret[1] = 101; 
           airspring.indexedDB.calcAvg_registration();
         }
-      
       }
     }
 

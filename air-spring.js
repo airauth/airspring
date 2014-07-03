@@ -1,6 +1,6 @@
 // Extension JS code goes here :)
 function auth_ready(frame, count) {
-	var ret = ["Passed", 1];
+	var ret = ["Passed", 1, 1];
 	var hand;
         
 	if(frame.hands.length === 0) {
@@ -13,55 +13,55 @@ function auth_ready(frame, count) {
 		if(frame.hands[0]) {
 			hand = frame.hands[0];
 			if (count_extended_fingers(hand) < 5) {
-				ret = ["5 Fingers Not Showing", 0];
+				ret = ["5 Fingers Not Showing", 0, 0];
 			}
 			else if (hand.palmPosition[0] > 50) {
-				ret = ["Hand Too Far Right", 0];
+				ret = ["Hand Too Far Right", 0, 0];
 			}
 			else if (hand.palmPosition[0] < -50) {
-				ret = ["Hand Too Far Left", 0];
+				ret = ["Hand Too Far Left", 0, 0];
 			}
 			else if (hand.palmPosition[1] > 135) {
-				ret = ["Hand Too High", 0];
+				ret = ["Hand Too High", 0, 0];
 			}
 			else if (hand.palmPosition[1] < 115) {
-				ret = ["Hand Too Low", 0];
+				ret = ["Hand Too Low", 0, 0];
 			}
 			else if (hand.palmPosition[2] < -50) {
-				ret = ["Hand Too Far From Body", 0];
+				ret = ["Hand Too Far From Body", 0, 0];
 			}
 			else if (hand.palmPosition[2] > 50) {
-				ret = ["Hand Too Close To Body", 0];
+				ret = ["Hand Too Close To Body", 0, 0];
 			}
 			else if(hand.grabStrength > 0.01) {
-				ret = ["Fingers Not Straight Enough", 0];
+				ret = ["Fingers Not Straight Enough", 0, 0];
 			}
 			else if (hand.roll() > 0.15) {
-				ret = ["Hand Is Not Flat, Rolled Left", 0];
+				ret = ["Hand Is Not Flat, Rolled Left", 0, 0];
 			}
 			else if (hand.roll() < -0.15) {
-				ret = ["Hand Is Not Flat, Rolled Right", 0];
+				ret = ["Hand Is Not Flat, Rolled Right", 0, 0];
 			}
 			else if (hand.pitch() > 0.15) {
-				ret = ["Hand Is Not Flat, Pitched Backwards", 0];
+				ret = ["Hand Is Not Flat, Pitched Backwards", 0, 0];
 			}
 			else if (hand.pitch() < -0.15) {
-				ret = ["Hand Is Not Flat, Pitched Forwards", 0];
+				ret = ["Hand Is Not Flat, Pitched Forwards", 0, 0];
 			}
 		}
 		else {
-			ret = ["No Hand After Check", 0];
+			ret = ["No Hand After Check", 0, 0];
 		}
 	}
 	if(ret[1] == 1){
 		if(count < 100){
-                        console.log(count);
-                        ++count;
-			ret = ["Gathering", count];
+            //console.log(count);
+            ++count;
+			ret = ["Gathering", count, 1];
 			//console.log(frame);
 			addHandData(frame);
 		}else{
-			ret = ["Gathered All Data!", count];
+			ret = ["Gathered All Data!", count, 0];
 		}
 	}
 	ret[1] = count;
