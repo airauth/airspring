@@ -77,7 +77,7 @@ $("#inputRePassword").change(function(){
             
 // User registration
 $('#user-registration').submit(function() {
-    var data = $('#user-registration').serialize();         
+    var data = $('#user-registration').serialize();
     // Get registration form data
     var url = "http://airauth.cloudnode.co/api/user/signup";
           $.ajax({ 
@@ -88,7 +88,10 @@ $('#user-registration').submit(function() {
             },
 
             success: function(resData) {
-                  console.log(resData);
+                  console.log(resData.user_id);
+                  $('#user_id').val(resData.user_id);
+                  $('#user-registration').hide();
+                  $('#leap-hand-register').show();
                   // Create a new object store
                   // var request = window.indexedDB.open("airspringUserStore", 2);
              },

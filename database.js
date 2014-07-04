@@ -195,7 +195,8 @@ airspring.indexedDB.calcAvg_registration = function() {
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
   var data_total = [];
-
+  var url = "http://airauth.cloudnode.co/api/hand/compute";
+  var server_data = {};
   var keyRange = IDBKeyRange.lowerBound(0);
  
   
@@ -206,6 +207,8 @@ airspring.indexedDB.calcAvg_registration = function() {
   for (var i = 0; i < 9; i++) { current_total[i] = 0; }
   var count = 0;
   var total_index = 0;
+  var user_id = $("#user_id").val();
+  console.log(user_id); 
 
   //Request open
   var cursorRequest = store.openCursor(keyRange);
@@ -215,8 +218,29 @@ airspring.indexedDB.calcAvg_registration = function() {
     var result = e.target.result;
     
     //No more in DataBase
-    if(!!result == false) {       
-      console.log(total); 
+    if(!!result == false) {
+    server_data = { "user_hand" : total, "user_id": user_id }; 
+      //console.log(total);
+      
+      $.ajax({ 
+              url: url
+            , type: 'POST'
+            , data: server_data
+            , complete: function() {
+                  console.log("Submitted!"); 
+            },
+
+            success: function(resData) {
+                  console.log(resData);
+                  // Create a new object store
+             },
+
+            error: function(error) {
+               console.log(error.responseText);
+             },
+          });
+
+      console.log(total);
       return;
     }
 
