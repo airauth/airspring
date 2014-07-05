@@ -184,7 +184,7 @@ airspring.indexedDB.calcAvg_login = function() {
             },
 
             success: function(resData) {
-
+                console.log(resData);
              },
 
             error: function(error) {
