@@ -47,3 +47,7 @@ hand-alerts {
 #leap-hand-register{
     display: none;
 }
+
+#leap-hand-register-complete{
+    display: none;
+}

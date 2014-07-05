@@ -84,7 +84,6 @@ $('#user-registration').submit(function() {
               url: url
             , data: data
             , complete: function() {
-                  console.log("Submitted!"); 
             },
 
             success: function(resData) {
