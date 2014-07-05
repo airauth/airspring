@@ -139,17 +139,18 @@ airspring.indexedDB.calcAvg_login = function() {
   var db = airspring.indexedDB.db;
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
-  var data_total = [];
-
+ var url = "http://airauth.cloudnode.co/api/user/login";
   var keyRange = IDBKeyRange.lowerBound(0);
   var cursorRequest = store.openCursor(keyRange);
   
   //Array to store the total of all samples
   var total = [];
-
   //Initialize to zeros
   for (var i = 0; i < 9; i++) { total[i] = 0; }
-
+  var hand = {};
+  var server_data = {};
+  var user_email = $("#inputEmail").val();
+  var user_password = $("#inputPassword").val();
   var count = 0;
 
   cursorRequest.onsuccess = function(e) {
@@ -160,7 +161,37 @@ airspring.indexedDB.calcAvg_login = function() {
       for (var i = 0; i < total.length; i++) { 
         total[i] = total[i]/10;
       }
-      console.log(total); 
+
+       hand = {
+        "indexMedialLength" : total[0],
+        "indexDistalLength" : total[1],
+        "middleMedialLength" : total[2],
+        "middleDistalLength" : total[3],
+        "ringMedialLength" : total[4],
+        "ringDistalLength" : total[5],
+        "pinkyMedialLength" : total[6],
+        "pinkyDistalLength" : total[7],
+        "thumbDistalLength" : total[8],
+      }
+      
+      server_data = { "user_hand" : hand, "email": user_email, "password": user_password }; 
+      console.log(server_data);
+      $.ajax({ 
+              url: url
+            , type: 'POST'
+            , data: server_data
+            , complete: function() {
+            },
+
+            success: function(resData) {
+
+             },
+
+            error: function(error) {
+               console.log(error.responseText);
+             },
+          });
+
       return;
     }
 
@@ -231,8 +262,11 @@ airspring.indexedDB.calcAvg_registration = function() {
             },
 
             success: function(resData) {
-                  console.log(resData);
-                  // Create a new object store
+              console.log("here");
+                if(resData){
+                  $('#leap-hand-register-complete').show();
+                  //console.log("here");
+                }
              },
 
             error: function(error) {
@@ -366,20 +400,6 @@ window.addEventListener("DOMContentLoaded", init, false);
 function addHandData(frame) {
   airspring.indexedDB.addHandData(frame);
 } 
-
-//______________________________________________________________________________________________________________
-
-
-function addHandData2(array) {
-  airspring.indexedDB.addHandData2(array);
-} 
-
-//______________________________________________________________________________________________________________
-
-
-function addHandData3(array) {
-  airspring.indexedDB.addHandData3(array);
-}
 
 //______________________________________________________________________________________________________________
 
