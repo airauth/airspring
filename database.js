@@ -146,7 +146,7 @@ airspring.indexedDB.calcAvg_login = function() {
   //Array to store the total of all samples
   var total = [];
   //Initialize to zeros
-  for (var i = 0; i < 9; i++) { total[i] = 0; }
+  for (var i = 0; i < 18; i++) { total[i] = 0; }
   var hand = {};
   var server_data = {};
   var user_email = $("#inputEmail").val();
@@ -172,6 +172,15 @@ airspring.indexedDB.calcAvg_login = function() {
         "pinkyMedialLength" : total[6],
         "pinkyDistalLength" : total[7],
         "thumbDistalLength" : total[8],
+        "indexMedialWidth" : total[9],
+        "indexDistalWidth" : total[10],
+        "middleMedialWidth" : total[11],
+        "middleDistalWidth" : total[12],
+        "ringMedialWidth" : total[13],
+        "ringDistalWidth" : total[15],
+        "pinkyMedialWidth" : total[15],
+        "pinkyDistalWidth" : total[16],
+        "thumbDistalWidth" : total[17],
       }
       
       server_data = { "user_hand" : hand, "email": user_email, "password": user_password }; 
@@ -235,7 +244,7 @@ airspring.indexedDB.calcAvg_registration = function() {
   var current_total = [];
   var total = [];
   //Initialize to zeros
-  for (var i = 0; i < 9; i++) { current_total[i] = 0; }
+  for (var i = 0; i < 18; i++) { current_total[i] = 0; }
   var count = 0;
   var total_index = 0;
   var user_id = $("#user_id").val();
@@ -251,7 +260,7 @@ airspring.indexedDB.calcAvg_registration = function() {
     //No more in DataBase
     if(!!result == false) {
     server_data = { "user_hand" : total, "user_id": user_id }; 
-      //console.log(total);
+      console.log(server_data);
       
       $.ajax({ 
               url: url
@@ -295,9 +304,18 @@ airspring.indexedDB.calcAvg_registration = function() {
         "pinkyMedialLength" : current_total[6],
         "pinkyDistalLength" : current_total[7],
         "thumbDistalLength" : current_total[8],
+        "indexMedialWidth" : current_total[9],
+        "indexDistalWidth" : current_total[10],
+        "middleMedialWidth" : current_total[11],
+        "middleDistalWidth" : current_total[12],
+        "ringMedialWidth" : current_total[13],
+        "ringDistalWidth" : current_total[15],
+        "pinkyMedialWidth" : current_total[15],
+        "pinkyDistalWidth" : current_total[16],
+        "thumbDistalWidth" : current_total[17],
       }
       total_index++;
-      for (var i = 0; i < 9; i++) { current_total[i] = 0; }
+      for (var i = 0; i < 18; i++) { current_total[i] = 0; }
     }
 
     var data = [];
@@ -364,6 +382,9 @@ airspring.indexedDB.addHandData = function(frame) {
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
 
+  //console.log("HELL0");
+  console.log(frame);
+
   var request = store.put({
     "indexMedialLength" : frame.hands[0].indexFinger.medial.length,
     "indexDistalLength" : frame.hands[0].indexFinger.distal.length,
@@ -374,6 +395,15 @@ airspring.indexedDB.addHandData = function(frame) {
     "pinkyMedialLength" : frame.hands[0].pinky.medial.length,
     "pinkyDistalLength" : frame.hands[0].pinky.distal.length,
     "thumbDistalLength" : frame.hands[0].thumb.distal.length,
+    "indexMedialWidth" : frame.hands[0].indexFinger.medial.width,
+    "indexDistalWidth" : frame.hands[0].indexFinger.distal.width,
+    "middleMedialWidth" : frame.hands[0].middleFinger.medial.width,
+    "middleDistalWidth" : frame.hands[0].middleFinger.distal.width,
+    "ringMedialWidth" : frame.hands[0].ringFinger.medial.width,
+    "ringDistalWidth" : frame.hands[0].ringFinger.distal.width,
+    "pinkyMedialWidth" : frame.hands[0].pinky.medial.width,
+    "pinkyDistalWidth" : frame.hands[0].pinky.distal.width,
+    "thumbDistalWidth" : frame.hands[0].thumb.distal.width,
     "timeStamp" : new Date().getTime()
   });
 
