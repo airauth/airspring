@@ -55,3 +55,19 @@ hand-alerts {
 .login-message {
     display: none; 
 }
+
+.airauth-gesture-table {
+    text-align: center;
+}
+
+.airauth-gesture-table th {
+    text-align: center;
+}
+
+.airauth-gesture-h3 {
+    text-align: center;
+}
+
+.airauth-addeditsite-btn {
+    width: 24%;
+}
