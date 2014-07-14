@@ -90,3 +90,8 @@ hand-alerts {
 .airauth-addeditsite-btn {
     width: 24%;
 }
+
+.launcher-progress {
+    padding-top: 2%;
+    text-align: center;
+} 
