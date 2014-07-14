@@ -139,7 +139,7 @@ airspring.indexedDB.calcAvg_login = function() {
   var db = airspring.indexedDB.db;
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
- var url = "http://airauth.cloudnode.co/api/user/login";
+  var url = "http://airauth.cloudnode.co/api/user/login";
   var keyRange = IDBKeyRange.lowerBound(0);
   var cursorRequest = store.openCursor(keyRange);
   

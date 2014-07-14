@@ -81,7 +81,7 @@ $('#user-registration').submit(function() {
     // Get registration form data
     var url = "http://airauth.cloudnode.co/api/user/signup";
           $.ajax({ 
-              url: url
+              url: url 
             , data: data
             , complete: function() {
             },
@@ -103,6 +103,43 @@ $('#user-registration').submit(function() {
               
     
     console.log($('#user-registration').serialize());
+    return false;
+
+});
+
+// User Login
+$('#user-login').submit(function() {
+    var data = $('#user-login').serialize();
+    // Get registration form data
+    var url = "http://airauth.cloudnode.co/api/user/login";
+          $.ajax({ 
+              url: url
+            , type: 'POST'
+            , data: data
+            , complete: function() {
+            },
+
+            success: function(resData) {
+                  if (resData.valid) {
+                            console.log(resData);
+                  }
+             },
+
+            error: function(error) {
+              console.log(error.responseJSON.valid); 
+               if (!error.responseJSON.valid) {
+                            $('.login-message').addClass('alert-danger').html('Invalid username or password!'); 
+                            $('.login-message').show(); 
+              } else {
+                            $('.login-message').addClass('alert-danger').html('Something went wrong!'); 
+                            $('.login-message').show();    
+              }
+             },
+          });
+          
+              
+    
+    console.log($('#user-login').serialize());
     return false;
 
 });
