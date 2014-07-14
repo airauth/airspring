@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"> 
+  <head>
+    <meta charset="utf-8">
+    <title>Air.Auth - Your hand is your identity | Add Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="assets/css/bootstrp.min.css">
+    <link rel="stylesheet" href="assets/css/air-style.css">
+  </head>
+  <body>
+    <div id="navbar"></div>
+    <div class="container">
+      <br>
+      <p class="header-icon"><img src="assets/img/air-auth-icon.png" title="Air.Auth" class="header-img" /></p>
+      <div class="row">
+        <div class="col-lg-12"> 
+          <form class="form-horizontal" id="user-registration" _lpchecked="1">
+            <fieldset>
+              <div class="form-group">
+                <label for="input_name" class="col-lg-4 control-label">Site Name</label>
+                <div class="col-lg-4">
+                  <input type="text" class="form-control" id="input_name" autocomplete="off" style="cursor: auto; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input_url" class="col-lg-4 control-label">Site URL</label>
+                <div class="col-lg-4">
+                  <input type="text" class="form-control" id="input_url" autocomplete="off" style="cursor: auto; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input_username" class="col-lg-4 control-label">Site Username</label>
+                <div class="col-lg-4">
+                  <input type="text" class="form-control" id="input_username" autocomplete="off" style="cursor: auto; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input_password" class="col-lg-4 control-label">Site Password</label>
+                <div class="col-lg-4">
+                  <input type="text" class="form-control" id="input_password" autocomplete="off" style="cursor: auto; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input_assigned_gesture" class="col-lg-4 control-label">Assigned Gesture</label>
+                <div class="col-lg-4">
+                  <select class="form-control" id="input_assigned_gesture">
+                    <option selected>Choose a Gesture</option>
+                    <option>Gesture 1</option>
+                    <option>Gesture 2</option>
+                    <option>Gesture 3</option>
+                    <option>Gesture 4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-8 col-md-offset-2">
+                  <button class="btn btn-primary airauth-addeditsite-btn" id="addedit-save-btn" disabled>Save</button>
+                  <button class="btn btn-primary airauth-addeditsite-btn" id="addedit-delete-btn" disabled>Delete</button>
+                  <button class="btn btn-primary airauth-addeditsite-btn" id="addedit-cancel-btn" disabled>Cancel</button>
+                  <button class="btn btn-primary airauth-addeditsite-btn" id="addedit-update-btn" disabled>Update</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+            <p> 2014 Air.Auth </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="assets/js/jquery-1.10.2.min.js"></script>
+    <script src="assets/js/add-edit-site.js"></script>
+    <script src="assets/js/three.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/js/ejs.js"></script>
+    <script src="assets/js/templates.js"></script>
+  </body>
+</html>
