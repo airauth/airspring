@@ -74,3 +74,19 @@ hand-alerts {
     color:#fff !important;
     z-index:2;
 }
+
+.airauth-gesture-table {
+    text-align: center;
+}
+
+.airauth-gesture-table th {
+    text-align: center;
+}
+
+.airauth-gesture-h3 {
+    text-align: center;
+}
+
+.airauth-addeditsite-btn {
+    width: 24%;
+}
