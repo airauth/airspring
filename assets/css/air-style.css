@@ -74,3 +74,8 @@ hand-alerts {
     color:#fff !important;
     z-index:2;
 }
+
+.launcher-progress {
+    padding-top: 2%;
+    text-align: center;
+}
