@@ -29,7 +29,7 @@
     "content_scripts": [
     {
       "matches": ["http://www.google.com/*"],
-      "js": ["assets/js/jquery-1.10.2.min.js", "assets/js/bootstrap.min.js", "assets/js/ejs.js", "assets/js/templates.js" ,"leap-0.6.0.js", "air-spring.js", "database.js", "assets/js/three.js", "assets/js/leap-plugins-0.1.6.js", "assets/js/leap.rigged-hand-0.1.4.min.js", "assets/js/jquery.indexeddb.js", "assets/js/messages.js", "registration.js"]
+      "js": ["assets/js/jquery-1.10.2.min.js", "assets/js/bootstrap.min.js", "assets/js/ejs.js", "assets/js/templates.js" ,"leap-0.6.0.js", "air-spring.js", "database.js", "assets/js/three.js", "assets/js/leap-plugins-0.1.6.js", "assets/js/leap.rigged-hand-0.1.4.min.js", "assets/js/jquery.indexeddb.js", "assets/js/messages.js", "registration.js", "assets/js/air-scripts.js"]
     }
   ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
