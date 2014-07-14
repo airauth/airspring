@@ -51,3 +51,7 @@ hand-alerts {
 #leap-hand-register-complete{
     display: none;
 }
+
+.login-message {
+    display: none; 
+}
