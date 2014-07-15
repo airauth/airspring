@@ -1,11 +1,11 @@
 // Set up the controller:
 
 locatorHeight = window.innerHeight;
-$("#locator").css("padding-top", (locatorHeight/2)-130)
+$("#locator").css("padding-top", (locatorHeight/2)-125)
 
 $(window).resize(function(){
     locatorHeight = window.innerHeight;
-    $("#locator").css("padding-top", (locatorHeight/2)-130)
+    $("#locator").css("padding-top", (locatorHeight/2)-125)
 });
 
 console.log(locatorHeight);
