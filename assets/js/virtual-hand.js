@@ -1,11 +1,21 @@
 // Set up the controller:
+
+locatorHeight = window.innerHeight;
+$("#locator").css("padding-top", (locatorHeight/2)-130)
+
+$(window).resize(function(){
+    locatorHeight = window.innerHeight;
+    $("#locator").css("padding-top", (locatorHeight/2)-130)
+});
+
+console.log(locatorHeight);
+console.log(locatorHeight/2);
 var controller = Leap.loop(function (frame) {
 
     visualizeHand = function(controller){
         
-        console.log(frame);
         controller.use('riggedHand', {
-            scale: 1.3,
+            scale: 1.5,
             boneColors: function (boneMesh, leapHand){
                 return {
                     hue: 0.33,
