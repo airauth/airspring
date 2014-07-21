@@ -24,32 +24,25 @@
     </style>
   </head>
   <body>
-    <div id="navbar_launcher"></div>
-    <div class="container">
-        <div class="row launcher-progress">
-            <div class="col-lg-4 col-md-offset-4">
-                <div id="hand-alerts" class="alert alert-info"> Place your hand over your Leap to begin scanning </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-offset-3">
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar">0%</div>
+    <div id="main" style="width: 100%; height: 100%">
+        <div id="navbar_launcher"></div>
+        <div class="container" id="virtualhand">
+            <div class="row launcher-progress">
+                <div class="col-lg-4 col-md-offset-4">
+                    <div id="hand-alerts" class="alert alert-info"> Place your hand over your Leap to begin scanning </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div id="locator" class="launcher-marker col-lg-6 col-md-offset-3">
-                <span class="glyphicon glyphicon-plus"></span>
+            <div class="row">
+                <div class="col-lg-6 col-md-offset-3">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar">0%</div>
+                    </div>
+                </div>
             </div>
+            <div id="render-area" style="width: 100%; height: 100%"></div>
         </div>
-    </div>
+        <div id="webgl-warning"><b>WARNING:</b> Your browser does not support WebGL. Rendering quality is limited and gesture trails are disabled.</div>
         
-    
-    <div class="footer">
-      <div class="container">
-        <p class="text-muted">2014 Air.Auth</p>
-      </div>
     </div>
     
     <!--
@@ -60,18 +53,20 @@
     -->
     
     <script src="assets/js/jquery-1.10.2.min.js"></script>
-    <script src="leap-0.6.0.js"></script>
+    
     <script src="assets/js/three.min.js"></script>
-    <script src="assets/js/leap.rigged-hand-0.1.4.min.js"></script>
-    <script src="assets/js/leap-plugins-0.1.6.js"></script>
-    <script src="database.js"></script>
+    <script src="assets/js/detector.js"></script>
+    <script src="assets/js/tween.js"></script>
+    <script src="assets/js/orbit-controls.js"></script>
+    <script src="leap-0.6.0.js"></script>
+    <script src="assets/js/database.js"></script>
     <script src="air-spring.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/js/ejs.js"></script>
     <script src="assets/js/templates.js"></script>
     <script src="assets/js/user-auth.js"></script>
     <script src="assets/js/messages.js"></script>
-    <script src="/assets/js/virtual-hand.js"></script>
-    <script src="handscan.js"></script>
+    <script src="assets/js/leaptrainer.js"></script>
+    <script src="assets/js/launcher-ui.js"></script>
   </body>
 </html>
