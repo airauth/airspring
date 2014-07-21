@@ -3,6 +3,10 @@ console.log("Hello");
 
 var progressbar = $('.progress-bar');
 var ret = ["AirSpring", 0, 0];
+var scan = false;
+var count = 0;
+var prev_fing_count = 0;
+var pincode = [];
 
 var controller = Leap.loop(function (frame) {
                 
@@ -108,8 +112,10 @@ var controller = Leap.loop(function (frame) {
           progressbar.css("width", "100%");
           $(".progress-bar").html("100%");
           show_message("hand-alerts", 'success', 'Complete!');
-          airspring.indexedDB.calcAvg_login();
-        } 
+          //airspring.indexedDB.calcAvg_login();
+          
+        }
+      }
     }
-  }
+                
 });

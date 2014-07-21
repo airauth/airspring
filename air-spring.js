@@ -21,10 +21,10 @@ function auth_ready(frame, count) {
 			else if (hand.palmPosition[0] < -50) {
 				ret = ["Hand Too Far Left", 0, 0];
 			}
-			else if (hand.palmPosition[1] > 135) {
+			else if (hand.palmPosition[1] > 155) {
 				ret = ["Hand Too High", 0, 0];
 			}
-			else if (hand.palmPosition[1] < 115) {
+			else if (hand.palmPosition[1] < 130) {
 				ret = ["Hand Too Low", 0, 0];
 			}
 			else if (hand.palmPosition[2] < -50) {
@@ -77,4 +77,25 @@ function count_extended_fingers(hand) {
 		}
 	}
 	return extended;
-} 
+}
+
+function finger_pin(frame){
+	var pin_ret = [1, -1];
+	var hand;
+        
+	if(frame.hands.length === 0) {
+		pin_ret = ["No Hand", -1];		
+	}
+	else if(frame.hands.length > 1) {
+		pin_ret = ["More than One Hand", -1];
+	}
+	else {
+		if(frame.hands[0]) {
+			hand = frame.hands[0];
+			pin_ret = ["Passed", count_extended_fingers(hand)];
+			//console.log(count_extended_fingers(hand));
+		}
+	}
+	
+	return pin_ret;
+}
