@@ -31,74 +31,24 @@
  * Thanks Theo!
  * 
  * ----------------------------------------------------------------------
- * 
- *  
- * Table of contents
- * ---------------------------
- * 
- * 	1. Basic Initialization
- *	2. Setting up the options panel
- *	3. Setting up the overlay
- * 	4. Handling window resize events
- *	5. Setting up the gesture creation form
- *	6. Utility interface modification functions
- *	7. Training event listeners
- *	8. Leap controller event listeners
- *	9. WebGL rendering functions
- *	10. And finally...
- * 
- * ---------------------------
  */
+
+
 jQuery(document).ready(function ($) {
 
-	/*
-	 * ------------------------------------------------------------------------------------------
-	 *  1. Basic Initialization
-	 * ------------------------------------------------------------------------------------------
-	 */
-	
-	/*
-	 * First we create the leap controller - since the training UI will respond to event coming directly from the device.
-	 */
 	var controller = new Leap.Controller();
-
-	/*
-	 * Now we create the trainer controller, passing the leap controller as a parameter
-	 */
 	var trainer = new LeapTrainer.Controller({controller: controller});
 
 	/*
 	 * We get the DOM crawling done now during setup, so it's not consuming cycles at runtime.
 	 */
 	var 	win				= $(window),
-		body				= $("body"),
-		gestureCreationArea		= $('#gesture-creation-area'),
-		creationForm			= $('#new-gesture-form'),
-		existingGestureList 		= $("#existing-gestures"),
-		newGestureName			= $('#new-gesture-name'),
 		renderArea 			= $('#render-area'),
 		main				= $('#main'),
-		overlayArea			= $('#overlay'),
-		overlayShade			= $('#overlay-shade'),
-		exportingName			= $('#exporting-gesture-name'),
-		exportingSampleText 		= $('#exporting-gesture-sample-text'),
-		exportText 			= $('#export-text'),
-		retrainButton 			= $('#retrain-gesture'),
-		closeOverlayButton 		= $('#close-overlay'),
-		outputText			= $('#output-text'),
-		optionsButton			= $('#options-button'),
-		optionsArea  			= $('#options'), 
-		recordingTriggers 		= $('#recording-triggers'),
-		recordingStrategies 		= $('#recording-strategies'),
-		recogStrategies 		= $('#recognition-strategies'),
-		updateConfirmation  		= $('#options-update-confirmation'),
-		openConfiguration 		= $('#open-configuration'),
-		closeConfiguration 		= $('#close-configuration'),
 		wegGlWarning			= $('#webgl-warning'),
-		versionTag			= $('#version-tag'),
-		forkMe				= $('#fork-me'),
 		virtualhand			= $('#virtualhand'),
 		PINCode				= [],
+		
 		/*
 		 * We set up the WebGL renderer - switching to a canvas renderer if needed
 		 */
@@ -109,9 +59,6 @@ jQuery(document).ready(function ($) {
 		 * Some constant colors are declared for interface modifications
 		 */
 		red				= '#EE5A40',
-		green				= '#AFF372',
-		yellow				= '#EFF57E',
-		blue				= '#AFDFF1',
 		white				= '#FFFFFF',
 		black				= '#000000',
 		grey				= '#848484',
@@ -140,272 +87,21 @@ jQuery(document).ready(function ($) {
 		 */
 		windowHeight, 				// A holding variable for the current window height - used for calculations when the window is resized
 		windowWidth, 				// The current window width
-		gestureEntries 		= {},	// The list items ('LI') in the known gestures list - already jQuery-wrapped 
-		progressBars 		= {},	// The colored progress bar backgrounds in the list items - also jQuery-wrapped, needed for setting widths during recognition
-		gestureLabels 		= {},	// The area for text at the right of gesture list entries - displays 'LEARNED' when training completes
-		gestureArrows 		= {},	// The right-pointing arrow heads associated with each gesture in the gesture list
-		optionsOpen 		= false,// A toggle indicating if the options panel is currently open
-		overlayOpen 		= false,// A toggle indicating if the overlay is currently open
-		training 		= false,// A toggle indicating if the trainer is currently training a gesture - used to disable opening of the overlay during training
 		data;
 
-	/*
-	 * If WebGL is supported the WebGL warning can be removed entirely - otherwise it should be made visible.
-	 */
 	if (webGl) { wegGlWarning.remove(); } else { wegGlWarning.css({display: 'block'}); }
 
-	/*
-	 * Panning is disabled as it distrupts resetting of the camera position.
-	 * 
-	 * TODO: Fix the resetting, rather than just disabling panning.
-	 */
+	
 	controls.noPan = true;
 
 	
-	/*
-	 * ------------------------------------------------------------------------------------------
-	 *  2. Setting up the options panel
-	 * ------------------------------------------------------------------------------------------
-	 */	
-
-	/*
-	 * Opening and closing of the options area is just a jQuery animate on the left style of the main area - pushing it out of view to 
-	 * the right and revealing the options. 
-	 */
-	function openOptions (evt)  { 
-		
-		if (optionsOpen) { return; } 
-		
-		if (evt) { evt.stopPropagation(); } 
-		
-		optionsOpen = true;  
-		
-		recordingTriggers.focus(); 
-
-		main.animate({left: -340}); 
-	}
-
-	/*
-	 * 
-	 */
-	function closeOptions (evt) { 
-		
-		if (!optionsOpen) { return; } 
-		
-		if (evt) { evt.stopPropagation(); } 
-		
-		optionsOpen = false; 
-		
-		main.animate({left: 0}); 
-	}	
-	
-	/*
-	 * The options panel open/close functions are bound to the options button
-	 */
-	optionsButton.click(function(evt) { optionsOpen ? closeOptions(evt) : openOptions(evt); });
-	
-	/*
-	 * A touch swipe handler is set on the window, opening the options on swipe left, closing them on swipe right.
-	 */
-	win.touchwipe({ wipeRight: closeOptions, wipeLeft: openOptions, preventDefaultEvents: false });
-	
-	/*
-	 * When the main area is clicked it will close the option area if it's open
-	 */
-	main.click(closeOptions);
-
-    /*
-     * The option inputs are populated with the available trainer implementations and event listeners bound to them
-     */
-	function optionsUpdated() { updateConfirmation.show(); setTimeout(function() { updateConfirmation.hide(); }, 3000); }
-	
-	var impl, t = [], s = [], cs = [];
-	
-	/*
-	 * This function adds an option to a select list
-	 */
-    function setupOptionList(rt, t, list, implName) {
-
-    	if (rt) { rt = rt(); if (t.indexOf(rt) == -1) { t.push(rt); list.append('<option value="' + implName + '">' + rt + '</option>'); }}
-    }
-    
-    /*
-     * We populate the recording triggers, recording strategies, and recognition strategies option lists.
-     */
-    for (var implName in LeapTrainer) {
-
-    	impl = LeapTrainer[implName].prototype;
-    	
-    	setupOptionList(impl.getRecordingTriggerStrategy, t, recordingTriggers, implName);
-    	setupOptionList(impl.getFrameRecordingStrategy, s, recordingStrategies, implName);
-    	setupOptionList(impl.getRecognitionStrategy, cs, recogStrategies, implName);
-    }
-    
-    /*
-     * This function merges a function from one controller class into another
-     */
-    function modifyController(replacementController) {
-    	
-    	replacementController = LeapTrainer[replacementController];
-    	
-    	var fields = replacementController.overidden;
-
-    	var func;
-    	
-    	for (var field in fields) {
-
-    		func = replacementController.prototype[field];
-
-    		if (func) {
-
-        		if (func.bind) { func.bind(trainer); }
-        		
-        		trainer[field] 	= func;    			
-    		}
-    	}
-
-    	optionsUpdated();
-    }
-    
-    /*
-     * TODO: This is STILL AWFUL.. The functions involved in each strategy are assumed to be ALL overridden functions in the controller.. This may 
-     * not be the case.  
-     * 
-     * This really needs to be swapped out for something more reliable!
-     */
-	recordingTriggers.change(function() 	{ modifyController(recordingTriggers.val()); });
-	recordingStrategies.change(function() 	{ modifyController(recordingStrategies.val()); });
-	recogStrategies.change(function() 		{ modifyController(recogStrategies.val()); });
-
-	/*
-	 * This function updates a variable in the controller with a new value from one of the option input boxes.
-	 * 
-	 * TODO: Still.. Some input validation would be useful here - or in some cases, more restrictive inputs - sliders for the numbers, etc.
-	 */
-    function setupOptionInput(binding) {
-    	
-    	var input 	= $('#' + binding);
-
-    	input.val(trainer[binding]);
-    	
-    	input.blur(function() {
-    		
-    		var val = input.val();
-    		
-    		if (val != trainer[binding]) { trainer[binding] = val; optionsUpdated(); }
-    	});
-    }
-    
-    setupOptionInput('minRecordingVelocity');
-    setupOptionInput('maxRecordingVelocity');
-    setupOptionInput('minGestureFrames');
-    setupOptionInput('minPoseFrames');
-    setupOptionInput('hitThreshold');
-    setupOptionInput('trainingGestures');
-    setupOptionInput('convolutionFactor');
-    setupOptionInput('downtime');
-    
-    /*
-     * Now we set up the interface configuration drop-downs, which can be used to bind gestures to interface operations
-     */
-    var openConfigGesture = null, closeConfigGesture = null;
-    
-    function registerUIGesture (oldGesture, newGesture, func) { trainer.off(oldGesture, func); trainer.on(newGesture, func); optionsUpdated(); return newGesture; }
-
-	openConfiguration.change(function()  { openConfigGesture  = registerUIGesture(openConfigGesture, openConfiguration.val(), openOptions); });
-	closeConfiguration.change(function() { closeConfigGesture = registerUIGesture(closeConfigGesture, closeConfiguration.val(), closeOptions); });
-
-	/*
-	 * ------------------------------------------------------------------------------------------
-	 *  3. Setting up the overlay
-	 * ------------------------------------------------------------------------------------------
-	 */
-    
-	/**
-	 * Opens the overlay.
-	 * 
-	 * The overlay is opened and closed by just adding an 'overlay-open' class to the body tag.  The selected gesture 
-	 * in the gesture list is modified to be full width and display its arrow pointing at the overlay.  The content of 
-	 * the overlay is set as appropriate for the selected gesture.
-	 */
-	function openExportOverlay(listItem, gestureName) {
-
-		if (overlayOpen || training) { return; } // If a gesture is currently in training, the overlay can't be opened
-
-		trainer.pause(); // While the overlay is open, the training controller is inactive.
-		
-		main.css({position: 'inherit'});
-		
-		var bar = progressBars[gestureName];
-
-		bar.css({width: '100%', background: blue});
-
-		setGestureLabel(gestureName, '');
-		
-		existingGestureList.find('li').removeClass('selected');
-		
-	    listItem.addClass('selected');
-
-	    exportingName.html(gestureName);
-	    
-	    var json = trainer.toJSON(gestureName); // The JSON is extracted from the controller
-	    
-	    exportingSampleText.html((json.length > 60 ? json.substring(0, 60) : json) + '...');
-
-	    exportText.html(json);
-	    
-	    body.addClass('overlay-open'); // This is what makes the overlay and the shade visible
-	    
-		overlayOpen = true;
-
-	    exportText.css({height: overlayArea.height() - (overlayArea.children()[0].clientHeight + 150)});
-	};
-	
-	/**
-	 * Closes the overlay. The selected gesture to returned to as it was before the overlay opened.
-	 */
-	function closeExportOverlay() {
-		
-		if (!overlayOpen) { return; }		
-		
-		trainer.resume();
-
-		main.css({position: 'fixed'});
-
-		unselectAllGestures(true);
-		
-		existingGestureList.find('li').removeClass('selected');
-
-		body.removeClass('overlay-open'); // This is what makes the overlay and shade invisible again.
-		
-		overlayOpen = false;
-	};    
-    
-    /*
-     * When the retrain button is clicked the overlay closes and the leaptrainer retrain() function is called for the selected gesture
-     */
-    retrainButton.click(function() { closeExportOverlay(); trainer.retrain(exportingName.html()); });
-    
-    closeOverlayButton.click(closeExportOverlay); // Clicking on the close button closes the overlay
-
-    overlayShade.on('click', function (e) { if (body.hasClass('overlay-open')) { closeExportOverlay(); } }); // Clicking anywhere on the overlay shade closes the overlay
-
-    $(document).on('keydown', function (e) { if (e.keyCode === 27 ) { closeExportOverlay(); }}); // Pressing the ESC key closes the overlay
-    
-    /*
-     * Clicking on the export textarea causes all the text contained in it to be selected.  This way one needs only click on the textarea and 
-     * then CTRL+C (or whatever copy is on your system) to extract the JSON.
-     */
-    exportText.click(function() { this.focus(); this.select(); });
-    
-
 	/*
 	 * ------------------------------------------------------------------------------------------
 	 *  4. Handling window resize events
 	 * ------------------------------------------------------------------------------------------
 	 */
 
-    /*
+	/*
 	 * When the window resizes we update: 
 	 * 
 	 * 	- The dimensions of the three.js render area
@@ -418,11 +114,6 @@ jQuery(document).ready(function ($) {
 		windowHeight 		= main.innerHeight();
 		
 		windowWidth 		= virtualhand.innerWidth();
-		//console.log("Window Width =",windowWidth);
-		
-		//overlayShade.css	({height: windowHeight});
-		//optionsArea.css		({height: windowHeight});
-		//main.css		({height: windowHeight});
 
 		/*
 		 * The three.js area and renderer are resized to fit the page
@@ -433,25 +124,6 @@ jQuery(document).ready(function ($) {
 
 		renderer.setSize(windowWidth, renderHeight);
 
-		/*
-		 * When window drops below a given width , the output text is no longer centered on the screen - because if it is, it's likely 
-		 * to end up behind the gesture creation input or button.  Instead, it's pushed over to the left somewhat in order to clear the gesture 
-		 * creation form as much as possible.
-		 */
-		//var outputTextLeft = (windowWidth < 1000) ? 100 : 22; 
-
-		/*
-		 * The font of the output text is also scaled with the window width
-		 */
-		//outputText.css({left: outputTextLeft, width: windowWidth - outputTextLeft - 22, fontSize: Math.max(22, windowWidth/55)});
-
-		/*
-		 * The export/retrain overlay is always nearly as tall as the window, and wide enough to fill most of the window without covering
-		 * the gesture list.
-		 */
-		//overlayArea.css({width: windowWidth - 480, height: windowHeight * 0.88});
-
-		//exportText.css({height: overlayArea.height() - (overlayArea.children()[0].clientHeight + 150)}); // The export textarea stretches vertically
 	}			
 	
 	/*
@@ -464,130 +136,6 @@ jQuery(document).ready(function ($) {
 	 */
 	win.resize(updateDimensions);	
 	
-	
-	/*
-	 * ------------------------------------------------------------------------------------------
-	 *  5. Setting up the gesture creation form
-	 * ------------------------------------------------------------------------------------------
-	 */
-
-	/*
-	 * The gesture name input should be cleared on focus and reset to the default if it's empty on blur.
-	 * 
-	 * So we set the default as a data attribute on the element
-	 */
-	newGestureName.data('default-text', newGestureName.val());
-
-	/*
-	 * And then bind focus and blur listeners
-	 */
-	newGestureName.focus(function() {
-
-	    if ($(this).val() != '' && $(this).val() == $(this).data('default-text')) $(this).val("");
-	
-	}).blur(function(){ if ($(this).val() == "") $(this).val($(this).data('default-text')); });			
-	
-	/*
-	 * The gesture creation form should fire a script when submit, rather than actually submit to a URL - so we bind a 
-	 * function to the submit event which returns false in order to prevent the event propagating.
-	 * 
-	 * Regardless of whether a gesture is created or not, the form shouldn't submit - so this function always returns FALSE.
-	 */
-	creationForm.submit(function() { 
-
-		var name = newGestureName.val().trim();
-
-		/*
-		 * If the input name is empty, the default on the box, or already exists in the list of existing gestures, we just do nothing and return.
-		 * 
-		 * TODO: Some sort of feedback on what happened here would be nice.
-		 */
-		if (name.length == 0 || name == newGestureName.data("default-text") || trainer.gestures[name] != null) { return false; }
-
-		/*
-		 * And then we create the new gesture in the trainer and return false to prevent the form submission event propagating. 
-		 * 
-		 * The gesture name is upper-cased for uniformity (TODO: This shouldn't really be a requirement).
-		 */
-		trainer.create(name.toUpperCase());
-		
-		return false;
-	});
-
-	
-	/*
-	 * ------------------------------------------------------------------------------------------
-	 *  6. Utility interface modification functions
-	 * ------------------------------------------------------------------------------------------
-	 */
-
-	/**
-	 * Sets the output text at the top of the screen.  If no parameter is passed, the text is set to an empty string.
-	 */
-	function setOutputText(text) { outputText.html(text ? text : ''); };
-
-	/**
-	 * Clears all selections and highlights in the gesture list.  If a parameter is passed all progress bars in the list will also be reset.
-	 */
-	function unselectAllGestures(resetProgressBars) {		
-
-		if (resetProgressBars) {
-			
-			for (arrow in gestureArrows) { gestureArrows[arrow].css({background: 'transparent'}); }
-			
-			var bar;
-			
-			for (barName in progressBars) { 
-				
-				bar = progressBars[barName];
-				
-				bar.css({width: '0%', background: blue});
-				
-				bar.parent().removeClass('selected'); 
-			}			
-		}
-
-		for (label in gestureLabels) { gestureLabels[label].html('&nbsp;'); }
-	}
-	
-	/**
-	 * Sets the width of the progress bar on a single gesture in the gesture list.  
-	 * 
-	 * This function uses standard-issue jQuery animation to tween the width on the bar up or down.
-	 */
-	function setGestureScale(gestureName, val, color, arrowColor) {		
-
-		gestureArrows[gestureName].css({display: arrowColor == 'transparent' ? 'none' : 'block', background: arrowColor});
-
-		var bar = progressBars[gestureName];
-
-		bar.css({background: color});
-
-		bar.animate({width: val + '%'}, 200, 'swing');
-	}
-	
-	/**
-	 * Updates all progress bars in the list with a list of hits output by the trainer.
-	 * 
-	 * If the second parameter is provided one gesture will be excluded - the gesture that 
-	 * has hit - since the update on that entry will be different (color change, etc).
-	 */
-	function setAllGestureScales(allHits, excluding) {		
-
-		for (var gestureName in allHits) {  
-			
-			if (gestureName == excluding) { continue; }
-			
-			setGestureLabel(gestureName);
-
-			setGestureScale(gestureName, Math.min(parseInt(100 * allHits[gestureName]), 100), blue, 'transparent');
-		}
-	}
-	
-	/**
-	 * Sets the text at the right of a gesture list entry
-	 */
-	function setGestureLabel(gestureName, val) { gestureLabels[gestureName].html(val ? val : '&nbsp;'); }
 
 	/**
 	 * Updates the whole interface to a disabled state.  This function is used when the connection to the Leap Motion is lost.
@@ -595,15 +143,7 @@ jQuery(document).ready(function ($) {
 	function disableUI(color, message) {
 		
 		main.css({background: color});
-		
-		gestureCreationArea.css({display: 'none'});
-		optionsButton	   .css({display: 'none'});
-		versionTag		   .css({display: 'none'});
-		forkMe			   .css({display: 'none'});
-		
-		outputText.css({background: 'transparent'});		
-		
-		setOutputText(message);
+		show_message("hand-alerts", 'alert', message);
 	}	
 	
 	/**
@@ -612,140 +152,10 @@ jQuery(document).ready(function ($) {
 	function enableUI(message) {
 		
 		main.css({background: ''});
-		
-		gestureCreationArea.css({display: ''});
-		optionsButton	   .css({display: ''});
-		versionTag		   .css({display: ''});
-		forkMe			   .css({display: ''});
-		
-		outputText.css({background: ''});
-		
-		setOutputText(message);
+		show_message("hand-alerts", 'info', message);
+		setTimeout(function() {changeText("Please enter your PIN then tap to Enter")}, 2000);
 	}	
 	
-	/*
-	 * ------------------------------------------------------------------------------------------
-	 *  7. Training event listeners
-	 * ------------------------------------------------------------------------------------------
-	 */
-
-	/*
-	 * When a new gesture is created by the trainer, an entry is added to the gestures list.
-	 */
-	trainer.on('gesture-created', function(gestureName, trainingSkipped) {
-		
-		/*
-		 * Since a new gesture is being created, we need to add an entry in the gesture list
-		 */
-		var gesture = $('<li' + (trainingSkipped ? '' : ' class="selected"') +'><div class="progress"><span class="gesture-name">' + gestureName + 
-						'</span><img class="arrow" src="./trainer-ui/images/training-arrow.png" /></div>' + 
-						'<img class="export-arrow" src="./trainer-ui/images/export-arrow.png" />' + 
-						'<span class="label">&nbsp;</span></li>');
-
-		gesture.click(function() { openExportOverlay(gesture, gestureName); }); //Clicking on the gesture will open the export/retrain overlay
-		
-		var items = existingGestureList.find('li');
-		
-		if (items.length == 0) {
-			
-			existingGestureList.append(gesture);
-			
-		} else {
-
-			/*
-			 * If there are already other gestures in the list we make sure to unselect any currently selected.
-			 */
-			unselectAllGestures(true);
-
-			$("#existing-gestures li").first().before(gesture);
-		}
-
-		/*
-		 * Wrapped references to the new DOM elements added are stored
-		 */
-		gestureEntries[gestureName]	= $(gesture[0]);
-		progressBars[gestureName] 	= $(gesture.find('.progress')[0]);
-		gestureLabels[gestureName] 	= $(gesture.find('.label')[0]);
-		gestureArrows[gestureName] 	= $(gesture.find('.progress .arrow')[0]);
-		
-		/*
-		 * We reset the input box
-		 */
-		newGestureName.val('');
-		newGestureName.blur();
-
-		/*
-		 * Finally we add the new gesture to the interface configuration option lists, so that the new gesture 
-		 * can be selected to associate it with interface functions.
-		 */
-	    openConfiguration.append('<option value="' + gestureName + '">' + gestureName + '</option>');
-	    
-	    closeConfiguration.append('<option value="' + gestureName + '">' + gestureName + '</option>');
-	});
-
-	/*
-	 * During a training countdown we update the output text. 
-	 */
-	trainer.on('training-countdown', function(countdown) {
-		
-		training = true;
-		
-		setOutputText('Starting training in ' + countdown + ' second' + (countdown > 1 ? 's' : ''));
-	});
-
-	/*
-	 * When training starts we reset the gesture progress bar, show the arrow on the gesture list entry, and change the progress bar to yellow.
-	 * The output text is updated to display how many training gestures need to be performed.
-	 */
-	trainer.on('training-started', function(gestureName) {
-
-		gestureArrows[gestureName].css({display: 'block'});
-
-		var trainingGestureCount = trainer.trainingGestures;
-		
-		setOutputText('Perform the ' + gestureName + ' gesture or pose ' + (trainingGestureCount > 1 ? trainingGestureCount + ' times' : ''));
-
-		gestureEntries[gestureName].css({background: 'transparent'});		
-		
-		setGestureLabel(gestureName);
-		
-		setGestureScale(gestureName, 1, yellow, yellow);
-	});
-
-	/*
-	 * When a training gesture is successfully saved, we render the gesture, update the progress bar on the gesture list entry, and 
-	 * update the output text to display how many more gestures need to be performed.
-	 */
-	trainer.on('training-gesture-saved', function(gestureName, trainingSet) {
-
-		var trainingGestures = trainer.trainingGestures;
-
-		renderGesture();
-		
-		var remaining = (trainingGestures - trainingSet.length);
-
-		setGestureScale(gestureName, 100 - ((100/trainingGestures) * remaining), yellow, yellow);
-
-		setOutputText('Perform the ' + gestureName + ' gesture ' + (remaining == 1 ? ' once more' : remaining + ' more times'));
-	});
-	
-	/*
-	 * When training completes we render the final training gesture, update the output text and gesture label, and set the gesture scale to 
-	 * 100% and green.
-	 */
-	trainer.on('training-complete', function(gestureName, trainingSet, isPose) {
-
-		training = false;		
-		
-		renderGesture();
-
-		setOutputText(gestureName + (isPose ? ' pose' : ' gesture') + ' learned!');
-
-		setGestureLabel(gestureName, 'Learned');
-		
-		setGestureScale(gestureName, 100, green, green);
-	});
-
 	/*
 	 * When a known gesture is recognised we select it in the gesture list, render it, update the gesture list entry progress bar to 
 	 * match the hit value, and set the output text.
@@ -760,12 +170,10 @@ jQuery(document).ready(function ($) {
 		}
 		//console.log(message_contents.charAt(0));
 		if (gestureName == "THUMB-LEFT" && message_contents.charAt(0) != "P") {
-			//console.log(message_contents.charAt(0));
 			message_contents = message_contents.slice(0, -2);
 			if (message_contents == "") {
 				$('#hand-alerts').text("Please enter your PIN then tap to Enter");
 			} else {
-				//console.log(message_contents);
 				$('#hand-alerts').text(message_contents);	
 			}
 			PINCode.pop();
@@ -774,7 +182,6 @@ jQuery(document).ready(function ($) {
 			if (message_contents.charAt(0) == "*") {
 				var message_contents_final = message_contents.concat("* ");
 				var message_contents_tmp = message_contents.concat(gestureName.charAt(0)+" ");
-				//console.log(message_contents_tmp);
 				$('#hand-alerts').text(message_contents_tmp);
 				setTimeout(function() {changeText(message_contents_final)}, 1000);
 				
@@ -788,40 +195,11 @@ jQuery(document).ready(function ($) {
 		
 		console.log(PINCode);
 		
-
-		//unselectAllGestures(false);
-		
-		//setAllGestureScales(allHits, gestureName);
-
-		//renderGesture();
-		
-		//var hitPercentage = Math.min(parseInt(100 * hit), 100);
-
-		//setGestureScale(gestureName, hitPercentage, green, green);
-
-		//setOutputText('<span style="font-weight: bold">' + gestureName + '</span> : ' + hitPercentage + '% MATCH');
 	});
 	
 	function changeText(message) {
-		//console.log("Here");
 		$('#hand-alerts').text(message)
 	}
-
-	/*
-	 * When an unknown gesture is recorded we unselect all gestures in the list, update all gesture progress bars with the list of hit 
-	 * values that did come back (all of which will be below trainer.hitThreshold) and empty the output text.  We also clear any currently 
-	 * rendered gesture.
-	 */
-	trainer.on('gesture-unknown', function(allHits) {
-
-		unselectAllGestures(false);
-		
-		setOutputText();
-		
-		setAllGestureScales(allHits);
-		
-		clearGesture();
-	});
 
 	/*
 	 * ------------------------------------------------------------------------------------------
@@ -832,16 +210,6 @@ jQuery(document).ready(function ($) {
 	/*
 	 * When the controller connects to the Leap web service we update the output text
 	 */
-	controller.on('connect', function() { setOutputText('Create a gesture or pose to get started'); });
-
-	/*
-	 * BLUR and FOCUS event listeners can be added in order to display that the trainer is no longer listening for 
-	 * input when the browser window blurs.
-	 * 
-	 * Currently these listeners are not enabled by default, since it seems intrusive.
-	 */
-	//controller.on('blur',	 function() { disableUI('#DDD'); setOutputText('Focus lost'); });
-	//controller.on('focus', function() { enableUI(); 		 setOutputText('Focus regained');}); 	
 
 	/*
 	 * When the connection to the Leap is lost we set the output text and disable the UI, making the background an alarming RED.
@@ -1197,6 +565,8 @@ jQuery(document).ready(function ($) {
 	 * And finally we connect to the device
 	 */
 	controller.connect();
+	
+	//Add pre recorded gestures
 	trainer.fromJSON('{"name":"5","pose":true,"data":[[{"x":0.15846420623616914,"y":-0.05243499183150489,"z":0.14135659145826984,"stroke":1},{"x":0.053001734053509886,"y":-0.042058371891306526,"z":0.12104271737884298,"stroke":1},{"x":-0.052460738129149254,"y":-0.03168175195110816,"z":0.10072884329941634,"stroke":1},{"x":-0.15792321031180845,"y":-0.0213051320109098,"z":0.08041496921998958,"stroke":1},{"x":-0.26338568249446764,"y":-0.010928512070711431,"z":0.06010109514056272,"stroke":1},{"x":-0.3688481546771269,"y":-0.0005518921305130639,"z":0.03978722106113597,"stroke":1},{"x":0.631151845322873,"y":0.15896065188605385,"z":-0.5434314375582171,"stroke":1}],[{"x":0.15643816244440784,"y":-0.05153353457710117,"z":0.1428141348478691,"stroke":1},{"x":0.05168480558886507,"y":-0.040791255226798384,"z":0.12206805183457581,"stroke":1},{"x":-0.0530685512666777,"y":-0.030048975876495604,"z":0.10132196882128275,"stroke":1},{"x":-0.15782190812222038,"y":-0.019306696526193087,"z":0.08057588580798958,"stroke":1},{"x":-0.2625752649777631,"y":-0.0085644171758903,"z":0.059829802794696296,"stroke":1},{"x":-0.3673286218333059,"y":0.0021778621744122165,"z":0.03908371978140324,"stroke":1},{"x":0.6326713781666942,"y":0.14806701720806634,"z":-0.5456935638878168,"stroke":1}],[{"x":0.15607901657178996,"y":-0.051135914376627255,"z":0.14441506061096998,"stroke":1},{"x":0.05145136077166351,"y":-0.040071028230167435,"z":0.12358788043218916,"stroke":1},{"x":-0.053176295028462994,"y":-0.029006142083707352,"z":0.10276070025340811,"stroke":1},{"x":-0.1578039508285895,"y":-0.01794125593724754,"z":0.08193352007462718,"stroke":1},{"x":-0.262431606628716,"y":-0.00687636979078745,"z":0.06110633989584635,"stroke":1},{"x":-0.3670592624288425,"y":0.004188516355672363,"z":0.040279159717065305,"stroke":1},{"x":0.6329407375711575,"y":0.1408421940628647,"z":-0.5540826609841061,"stroke":1}],[{"x":0.1558511816120715,"y":-0.0549964402456587,"z":0.14493846281913325,"stroke":1},{"x":0.05130326804784646,"y":-0.042533944229588005,"z":0.12378170461591242,"stroke":1},{"x":-0.053244645516378586,"y":-0.03007144821351731,"z":0.10262494641269171,"stroke":1},{"x":-0.15779255908060366,"y":-0.017608952197446612,"z":0.08146818820947077,"stroke":1},{"x":-0.26234047264482874,"y":-0.005146456181375915,"z":0.060311430006250055,"stroke":1},{"x":-0.3668883862090538,"y":0.007316039834694789,"z":0.03915467180302923,"stroke":1},{"x":0.6331116137909463,"y":0.14304120123289177,"z":-0.5522794038664877,"stroke":1}],[{"x":0.15648159431282088,"y":-0.05456718017987193,"z":0.14639683320432084,"stroke":1},{"x":0.05171303630333357,"y":-0.0421821263347442,"z":0.124302798210149,"stroke":1},{"x":-0.05305552170615374,"y":-0.029797072489616466,"z":0.10220876321597716,"stroke":1},{"x":-0.15782407971564105,"y":-0.017412018644488735,"z":0.08011472822180543,"stroke":1},{"x":-0.26259263772512836,"y":-0.0050269647993612665,"z":0.05802069322763348,"stroke":1},{"x":-0.36736119573461573,"y":0.007358089045766465,"z":0.03592665823346164,"stroke":1},{"x":0.6326388042653843,"y":0.14162727340231612,"z":-0.5469704743133479,"stroke":1}]]}');
 	trainer.fromJSON('{"name":"4","pose":true,"data":[[{"x":-0.004860071280314793,"y":-0.11327266045004425,"z":0.3371870145199918,"stroke":1},{"x":-0.06264958689475639,"y":-0.08166171350257986,"z":0.2348748058079967,"stroke":1},{"x":-0.12043910250919798,"y":-0.050050766555115464,"z":0.1325625970960016,"stroke":1},{"x":-0.17822861812363958,"y":-0.018439819607651065,"z":0.0302503883840064,"stroke":1},{"x":-0.23601813373808112,"y":0.013171127339813321,"z":-0.07206182032798869,"stroke":1},{"x":0.6021955125459897,"y":0.25025383277557733,"z":-0.6628129854800082,"stroke":1}],[{"x":-0.0058786246014594645,"y":-0.11112305966974088,"z":0.337357267103196,"stroke":1},{"x":-0.06283759288726345,"y":-0.08068926657786499,"z":0.2349429068412784,"stroke":1},{"x":-0.11979656117306743,"y":-0.05025547348598908,"z":0.13252854657936086,"stroke":1},{"x":-0.1767555294588714,"y":-0.019821680394113167,"z":0.030114186317443337,"stroke":1},{"x":-0.23371449774467537,"y":0.010612112697762355,"z":-0.07230017394447419,"stroke":1},{"x":0.5989828058653373,"y":0.2512773674299457,"z":-0.662642732896804,"stroke":1}],[{"x":-0.0064053956247657196,"y":-0.10961008165847068,"z":0.3370621587480078,"stroke":1},{"x":-0.0628419845282695,"y":-0.07964808836502996,"z":0.23482486349920317,"stroke":1},{"x":-0.11927857343177335,"y":-0.04968609507158922,"z":0.1325875682503983,"stroke":1},{"x":-0.1757151623352772,"y":-0.019724101778148484,"z":0.030350273001593653,"stroke":1},{"x":-0.23215175123878104,"y":0.010237891515292238,"z":-0.07188702224721111,"stroke":1},{"x":0.5963928671588665,"y":0.2484304753579461,"z":-0.6629378412519922,"stroke":1}],[{"x":-0.004548216411967981,"y":-0.10402301884245606,"z":0.3362813894034735,"stroke":1},{"x":-0.061033343429099635,"y":-0.07608808652534035,"z":0.23451255576138952,"stroke":1},{"x":-0.11751847044623126,"y":-0.04815315420822465,"z":0.1327437221193053,"stroke":1},{"x":-0.17400359746336286,"y":-0.020218221891108945,"z":0.030974888477221074,"stroke":1},{"x":-0.23048872448049454,"y":0.007716710426006759,"z":-0.07079394516486304,"stroke":1},{"x":0.5875923522311564,"y":0.24076577104112318,"z":-0.6637186105965265,"stroke":1}],[{"x":-0.002821869086251483,"y":-0.09912045102922458,"z":0.3351952222385507,"stroke":1},{"x":-0.05923890985461994,"y":-0.07275941354161514,"z":0.23407808889542026,"stroke":1},{"x":-0.11565595062298846,"y":-0.046398376054005694,"z":0.13296095555228993,"stroke":1},{"x":-0.17207299139135693,"y":-0.02003733856639625,"z":0.0318438222091596,"stroke":1},{"x":-0.2284900321597254,"y":0.006323698921212831,"z":-0.06927331113397084,"stroke":1},{"x":0.5782797531149421,"y":0.23199188027002893,"z":-0.6648047777614493,"stroke":1}]]}');
 	trainer.fromJSON('{"name":"3-L","pose":true,"data":[[{"x":0.13265084511050695,"y":-0.04988981971370192,"z":0.21036593408516868,"stroke":1},{"x":0.041031454408780255,"y":-0.05836810658242546,"z":0.20172765568086137,"stroke":1},{"x":-0.05058793629294642,"y":-0.06684639345114901,"z":0.19308937727655417,"stroke":1},{"x":-0.1422073269946731,"y":-0.07532468031987255,"z":0.18445109887224698,"stroke":1},{"x":0.019112963768332325,"y":0.2504290000671489,"z":-0.7896340659148313,"stroke":1}],[{"x":0.13093684590888136,"y":-0.048204673600024915,"z":0.21030646953140208,"stroke":1},{"x":0.03899312946479852,"y":-0.056910534533651025,"z":0.2017177449219002,"stroke":1},{"x":-0.052950586979284286,"y":-0.06561639546727714,"z":0.19312902031239843,"stroke":1},{"x":-0.1448943034233671,"y":-0.07432225640090326,"z":0.18454029570289654,"stroke":1},{"x":0.027914915028971504,"y":0.2450538600018564,"z":-0.7896935304685979,"stroke":1}],[{"x":0.12917036662824075,"y":-0.043954736347630204,"z":0.21018196281380808,"stroke":1},{"x":0.03735578555508154,"y":-0.052779339149217855,"z":0.20169699380230133,"stroke":1},{"x":-0.05445879551807768,"y":-0.061603941950805506,"z":0.19321202479079447,"stroke":1},{"x":-0.14627337659123688,"y":-0.07042854475239316,"z":0.1847270557792876,"stroke":1},{"x":0.034206019925992204,"y":0.22876656220004668,"z":-0.7898180371861919,"stroke":1}],[{"x":0.12664237635071973,"y":-0.042224908592627786,"z":0.21017098526474087,"stroke":1},{"x":0.03506501033169432,"y":-0.0507223733775042,"z":0.20169516421079015,"stroke":1},{"x":-0.05651235568733115,"y":-0.05921983816238062,"z":0.19321934315683953,"stroke":1},{"x":-0.1480897217063566,"y":-0.06771730294725704,"z":0.1847435221028888,"stroke":1},{"x":0.04289469071127369,"y":0.21988442307976963,"z":-0.7898290147352591,"stroke":1}],[{"x":0.12579367621669077,"y":-0.042231859639461446,"z":0.20964619577944354,"stroke":1},{"x":0.03344848521113014,"y":-0.05017373003254862,"z":0.20160769929657385,"stroke":1},{"x":-0.05889670579443043,"y":-0.058115600425635794,"z":0.19356920281370427,"stroke":1},{"x":-0.15124189679999103,"y":-0.06605747081872297,"z":0.18553070633083457,"stroke":1},{"x":0.05089644116660055,"y":0.21657866091636885,"z":-0.7903538042205565,"stroke":1}]]}');
