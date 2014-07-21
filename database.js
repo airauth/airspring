@@ -383,7 +383,7 @@ airspring.indexedDB.addHandData = function(frame) {
   var store = trans.objectStore("airspring_handdata");
 
   //console.log("HELL0");
-  console.log(frame);
+  //console.log(frame);
 
   var request = store.put({
     "indexMedialLength" : frame.hands[0].indexFinger.medial.length,
