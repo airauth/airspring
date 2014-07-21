@@ -105,3 +105,7 @@ padding-top: 30%;
 .red {
     color: #C9302C;
 }
+
+#main 				{ position: fixed; z-index: 1; }
+
+#render-area 											{ background: transparent; }
