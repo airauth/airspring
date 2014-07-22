@@ -2,9 +2,9 @@ var cookies = getCookies();
 var redirectURL = null; 
 if(jQuery.isEmptyObject(cookies)){
     // Now Redirect to Welcome 
-    redirectURL = "chrome-extension://"+location.host+"/welcome.html"; 
+    redirectURL = "chrome-extension://"+location.host+"/login.html"; 
 } else {
-    redirectURL = "chrome-extension://"+location.host+"/launcher.html"; 
+    redirectURL = "chrome-extension://"+location.host+"/scan.html"; 
 }
 // Redirect to URL 
 chrome.extension.sendRequest({redirect: redirectURL}); 
