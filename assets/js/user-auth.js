@@ -121,8 +121,16 @@ $('#user-login').submit(function() {
 
             success: function(resData) {
                   if (resData.valid) {
-                            console.log(resData);
-                  }
+                            // console.log(resData);
+                            createCookie(
+                                         '_airauth_'+resData.u_id,
+                                         '{"a_id": "'+resData.a_id+'", "u_hash": "'+resData.u_hash+'", "u_email": "'+resData.u_email+'"}',
+                                         7
+                            );
+                            // Now Redirect to launcher 
+                            var redirectURL = "chrome-extension://"+location.host+"/launcher.html";
+                            chrome.extension.sendRequest({redirect: redirectURL}); 
+                  } 
              },
 
             error: function(error) {
