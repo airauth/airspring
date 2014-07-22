@@ -15,7 +15,22 @@
    "content_scripts": [ {
       "all_frames": false,
       "js": [ "assets/js/contentscript.js" ],
-      "matches": [ "http://www.facebook.com/*", "https://www.facebook.com/*", "http://ppcdn.500px.org/*" ],
+      "matches": [
+                  "http://www.facebook.com/*",
+                  "https://www.facebook.com/*",
+                  "http://mail.google.com/*",
+                  "https://mail.google.com/*",
+                  "http://accounts.google.com/*",
+                  "https://accounts.google.com/*",
+                  "http://www.linkedin.com/*",
+                  "https://www.linkedin.com/*",
+                  "http://twitter.com/*",
+                  "https://twitter.com/*",
+                  "http://www.twitter.com/*",
+                  "https://www.twitter.com/*",
+                  "https://instagram.com/*",
+                  "http://instagram.com/*"
+                  ],
       "run_at": "document_idle"
    } ],
   "browser_action": {
