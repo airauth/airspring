@@ -139,19 +139,26 @@ airspring.indexedDB.calcAvg_login = function() {
   var db = airspring.indexedDB.db;
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
-  var url = "http://airauth.cloudnode.co/api/user/login";
+  var url = "http://airauth.cloudnode.co/api/hand/authenticate";
   var keyRange = IDBKeyRange.lowerBound(0);
   var cursorRequest = store.openCursor(keyRange);
   
   //Array to store the total of all samples
   var total = [];
   //Initialize to zeros
-  for (var i = 0; i < 18; i++) { total[i] = 0; }
+  for (var i = 0; i < 20; i++) { total[i] = 0; }
   var hand = {};
   var server_data = {};
-  var user_email = $("#inputEmail").val();
-  var user_password = $("#inputPassword").val();
+  //var user_email = $("#inputEmail").val();
+  //var user_password = $("#inputPassword").val();
   var count = 0;
+  var cookie_user_data = getCookies();
+  var user_ids = []; 
+  // Now Parse Object Data 
+  for (var key in cookie_user_data) {
+      var obj = cookie_user_data[key];
+      user_ids.push(obj.id); 
+  } 
 
   cursorRequest.onsuccess = function(e) {
     
@@ -181,9 +188,11 @@ airspring.indexedDB.calcAvg_login = function() {
         "pinkyMedialWidth" : total[15],
         "pinkyDistalWidth" : total[16],
         "thumbDistalWidth" : total[17],
+        "palmWidth" : total[18],
+        "left/right" : total[19],
       }
       
-      server_data = { "user_hand" : hand, "email": user_email, "password": user_password }; 
+      server_data = { "user_hand" : hand, "user_ids": user_ids }; 
       console.log(server_data);
       $.ajax({ 
               url: url
@@ -200,7 +209,7 @@ airspring.indexedDB.calcAvg_login = function() {
                console.log(error.responseText);
              },
           });
-
+  
       return;
     }
 
@@ -244,11 +253,11 @@ airspring.indexedDB.calcAvg_registration = function() {
   var current_total = [];
   var total = [];
   //Initialize to zeros
-  for (var i = 0; i < 18; i++) { current_total[i] = 0; }
+  for (var i = 0; i < 20; i++) { current_total[i] = 0; }
   var count = 0;
   var total_index = 0;
-  var user_id = $("#user_id").val();
-  console.log(user_id); 
+  var user_email = $("#user_id").val();
+  console.log(user_email); 
 
   //Request open
   var cursorRequest = store.openCursor(keyRange);
@@ -259,7 +268,7 @@ airspring.indexedDB.calcAvg_registration = function() {
     
     //No more in DataBase
     if(!!result == false) {
-    server_data = { "user_hand" : total, "user_id": user_id }; 
+    server_data = { "user_hand" : total, "user_email": user_email }; 
       console.log(server_data);
       
       $.ajax({ 
@@ -313,9 +322,11 @@ airspring.indexedDB.calcAvg_registration = function() {
         "pinkyMedialWidth" : current_total[15],
         "pinkyDistalWidth" : current_total[16],
         "thumbDistalWidth" : current_total[17],
+        "palmWidth" : current_total[18],
+        "left/right" : current_total[19],
       }
       total_index++;
-      for (var i = 0; i < 18; i++) { current_total[i] = 0; }
+      for (var i = 0; i < 20; i++) { current_total[i] = 0; }
     }
 
     var data = [];
@@ -378,12 +389,19 @@ airspring.indexedDB.calcAvg_registration = function() {
 //______________________________________________________________________________________________________________
 
 airspring.indexedDB.addHandData = function(frame) {
+  //console.log(frame);
   var db = airspring.indexedDB.db;
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
 
   //console.log("HELL0");
   //console.log(frame);
+  var hand_type;
+  if (frame.hands[0].type == "right") {
+    hand_type = 0;
+  }else{
+    hand_type =1;
+  }
 
   var request = store.put({
     "indexMedialLength" : frame.hands[0].indexFinger.medial.length,
@@ -404,6 +422,8 @@ airspring.indexedDB.addHandData = function(frame) {
     "pinkyMedialWidth" : frame.hands[0].pinky.medial.width,
     "pinkyDistalWidth" : frame.hands[0].pinky.distal.width,
     "thumbDistalWidth" : frame.hands[0].thumb.distal.width,
+    "palmWidth" : frame.data.hands[0].palmWidth,
+    "left/right" : hand_type,
     "timeStamp" : new Date().getTime()
   });
 

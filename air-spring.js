@@ -21,10 +21,10 @@ function auth_ready(frame, count) {
 			else if (hand.palmPosition[0] < -50) {
 				ret = ["Hand Too Far Left", 0, 0];
 			}
-			else if (hand.palmPosition[1] > 155) {
+			else if (hand.palmPosition[1] > 145) {
 				ret = ["Hand Too High", 0, 0];
 			}
-			else if (hand.palmPosition[1] < 130) {
+			else if (hand.palmPosition[1] < 135) {
 				ret = ["Hand Too Low", 0, 0];
 			}
 			else if (hand.palmPosition[2] < -50) {

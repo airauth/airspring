@@ -466,7 +466,7 @@ jQuery(document).ready(function ($) {
                         progressbar.css("width", "100%");
                         $(".progress-bar").html("100%");
                         show_message("hand-alerts", 'success', 'Complete!');
-                        //airspring.indexedDB.calcAvg_login();    
+                        airspring.indexedDB.calcAvg_login();    
                     }
                 }
             }
