@@ -3,6 +3,7 @@ var url = "http://airauth.cloudnode.co/api/session/get";
 var cookie_user_data = getCookies();
 var keys = [];
 var ids = [];
+var current_page = location.pathname;
 // Now Parse Object Data 
 for (var key in cookie_user_data) {
     var obj = cookie_user_data[key];
@@ -19,7 +20,7 @@ $.ajax({
 	},
 
 	success: function(resData) {
-            console.log("resData = ", resData);
+            //console.log("resData = ", resData);
             if (resData.result.length != 0) {
                 for(var i = 0; i < resData.result.length; i++){
                     var index = keys.indexOf(resData.result[i]);
@@ -27,13 +28,30 @@ $.ajax({
                     if (index != -1 ) {
                         deleteCookie('_airauth_'+ids[index]);
                     }
+                    var cookie_user_data = getCookies();
+                    if (current_page != '/login.html') {
+                        if (jQuery.isEmptyObject(cookie_user_data)) {
+                            redirectURL = "chrome-extension://"+location.host+"/login.html";
+                            // Redirect to URL 
+                            chrome.extension.sendRequest({redirect: redirectURL}); 
+                        }
+                    }
                     
                 }
             }
 	},
 
 	error: function(error) {
-	 },
+            var cookie_user_data = getCookies();
+                    
+            if (current_page != '/login.html') {
+                if (jQuery.isEmptyObject(cookie_user_data)) {
+                    redirectURL = "chrome-extension://"+location.host+"/login.html";
+                    // Redirect to URL 
+                    chrome.extension.sendRequest({redirect: redirectURL}); 
+                }
+            }
+        },
 });
 
 // Include navbar

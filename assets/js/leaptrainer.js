@@ -141,13 +141,13 @@ LeapTrainer.Controller = Class.extend({
 	recordedPoseFrames		: 0,	// A counter for recording how many pose frames have been recorded before triggering
 	recordingPose			: false,// A flag to indicate if a pose is currently being recorded
 	
-	hitThreshold			: 0.8,	// The correlation output value above which a gesture is considered recognized. Raise this to make matching more strict
+	hitThreshold			: 0.82,	// The correlation output value above which a gesture is considered recognized. Raise this to make matching more strict
 
 	trainingCountdown		: 3,	// The number of seconds after startTraining is called that training begins. This number of 'training-countdown' events will be emit.
 	trainingGestures		: 5,	// The number of gestures samples that collected during training
 	convolutionFactor		: 0,	// The factor by which training samples will be convolved over a gaussian distribution to expand the available training data
 
-	downtime				: 600,	// The number of milliseconds after a gesture is identified before another gesture recording cycle can begin
+	downtime				: 500,	// The number of milliseconds after a gesture is identified before another gesture recording cycle can begin
 	lastHit					: 0,	// The timestamp at which the last gesture was identified (recognized or not), used when calculating downtime
 	
 	gestures				: {},	// The current set of recorded gestures - names mapped to convolved training data

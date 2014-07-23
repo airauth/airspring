@@ -390,7 +390,7 @@ airspring.indexedDB.calcAvg_registration = function() {
 //______________________________________________________________________________________________________________
 
 airspring.indexedDB.addHandData = function(frame) {
-  //console.log(frame);
+  console.log("here");
   var db = airspring.indexedDB.db;
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");

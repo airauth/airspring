@@ -21,7 +21,7 @@ function auth_ready(frame, count) {
 			else if (hand.palmPosition[0] < -50) {
 				ret = ["Hand Too Far Left", 0, 0];
 			}
-			else if (hand.palmPosition[1] > 140) {
+			else if (hand.palmPosition[1] > 145) {
 				ret = ["Hand Too High", 0, 0];
 			}
 			else if (hand.palmPosition[1] < 135) {
@@ -33,19 +33,19 @@ function auth_ready(frame, count) {
 			else if (hand.palmPosition[2] > 50) {
 				ret = ["Hand Too Close To Body", 0, 0];
 			}
-			else if(hand.grabStrength > 0.05) {
+			else if(hand.grabStrength > 0.01) {
 				ret = ["Fingers Not Straight Enough", 0, 0];
 			}
-			else if (hand.roll() > 0.4) {
+			else if (hand.roll() > 0.15) {
 				ret = ["Hand Is Not Flat, Rolled Left", 0, 0];
 			}
-			else if (hand.roll() < -0.4) {
+			else if (hand.roll() < -0.15) {
 				ret = ["Hand Is Not Flat, Rolled Right", 0, 0];
 			}
-			else if (hand.pitch() > 0.4) {
+			else if (hand.pitch() > 0.15) {
 				ret = ["Hand Is Not Flat, Pitched Backwards", 0, 0];
 			}
-			else if (hand.pitch() < -0.4) {
+			else if (hand.pitch() < -0.15) {
 				ret = ["Hand Is Not Flat, Pitched Forwards", 0, 0];
 			}
 		}
@@ -54,7 +54,7 @@ function auth_ready(frame, count) {
 		}
 	}
 	if(ret[1] == 1){
-		if(count < 5){
+		if(count < 100){
             //console.log(count);
             ++count;
 			ret = ["Gathering", count, 1];
