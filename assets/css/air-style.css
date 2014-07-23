@@ -106,6 +106,34 @@ padding-top: 30%;
     color: #C9302C;
 }
 
-#main 				{ position: fixed; z-index: 1; }
+#main { position: fixed; z-index: 1; }
 
-#render-area 											{ background: transparent; }
+#render-area { background: transparent; }
+
+#dashboard-messages {
+    cursor: pointer;
+    display: block;
+    float: right;  
+    z-index: 3;
+    position: absolute; /*newly added*/
+    top: 59px;/*newly added*/
+    right: 10px; 
+}
+
+.fade { 
+   opacity: 0;
+   -webkit-transition: opacity 0.15s linear;
+   -moz-transition: opacity 0.15s linear;
+   -o-transition: opacity 0.15s linear;
+   transition: opacity 0.15s linear;
+   text-align: center; 
+}
+
+.fade.in { 
+    opacity: 1;
+}
+
+.alert-translucent {
+    background-color: rgba(0, 153, 213,0.5);
+    border: none; 
+}

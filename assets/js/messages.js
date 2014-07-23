@@ -13,3 +13,14 @@ function show_message(id, type, message){
     html_elem.html(message);
     
 }
+
+$( document ).ready(function() {
+    function fadeOutAlert() {
+        $("#dashboard-messages").delay(4000).fadeOut(function() {
+            $(this).remove(); 
+        });
+    }
+    
+    fadeOutAlert();
+    
+});
