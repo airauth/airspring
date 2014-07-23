@@ -47,10 +47,7 @@ jQuery(document).ready(function ($) {
 		main				= $('#main'),
 		wegGlWarning			= $('#webgl-warning'),
 		virtualhand			= $('#virtualhand'),
-		PINCode				= [],
-		scan				= true,
-		url				= "http://airauth.cloudnode.co/api/pin/authenticate",
-		thumbleft_count			= 0,
+		url				= "http://airauth.cloudnode.co/api/user/launch",
 		/*
 		 * We set up the WebGL renderer - switching to a canvas renderer if needed
 		 */
@@ -166,8 +163,37 @@ jQuery(document).ready(function ($) {
 		
 		//console.log(gestureName);
 		var message_contents = $('#hand-alerts').text();
+		var data = {'pose': gestureName};
 		
-		if (gestureName == "THUMB-RIGHT" && scan == true) {
+		$.ajax({ 
+			url: url
+			, type: 'POST'
+			, data: data
+			, complete: function() {
+			},
+
+			success: function(resData) {
+				
+				createCookie(
+					       '_airp_'+resData.id,
+					       '{"token": "'+resData.token+'"}',
+					       0.00964444
+				);
+			    console.log(resData);
+			    //redirectURL = "chrome-extension://"+location.host+"/launcher.html";
+			    //setTimeout(function(){redirect_success(redirectURL)},1000)
+			 },
+	    
+			error: function(error) {
+			    redirectURL = "chrome-extension://"+location.host+"/pin-error.html";
+			    //console.log(error.responseText);
+			    //setTimeout(function(){redirect_error(redirectURL)},500)
+			 },
+		});
+
+		show_message("hand-alerts", 'success', 'Launching&nbsp;&nbsp;&nbsp;&nbsp;'+gestureName);
+		
+		/*if (gestureName == "THUMB-RIGHT" && scan == true) {
 			if (PINCode.length < 4) {
 				console.log("Here");
 ;				show_message("hand-alerts", 'danger', 'PIN must be at least 4 digits');
@@ -237,7 +263,7 @@ jQuery(document).ready(function ($) {
 		}
 		
 		
-		console.log(PINCode);
+		console.log(PINCode);*/
 		
 	});
 	

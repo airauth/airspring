@@ -25,6 +25,12 @@ function getCookies() {
     return cookies; 
 }
 
+// Get Air.Auth PIN cookies
+function getPINCookies() {
+    var cookies = jaaulde.utils.cookies.filter( /_airp/ );
+    return cookies; 
+}
+
 // Delete All Cookies 
 function deleteAllCookies() {
     var result = jaaulde.utils.cookies.del(true);
