@@ -1,9 +1,9 @@
 //send message to extension - wait for reply then enter username and password into site
 chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
-    //console.log("Username = ", response.username);
-    //console.log("Password = ", response.password);
+    
   
     if (response.site == "facebook") {
+        console.log('facebook');
         var email = document.getElementById("email");
         email.value = response.username;
         var pass = document.getElementById("pass");

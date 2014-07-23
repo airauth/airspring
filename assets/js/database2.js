@@ -192,7 +192,8 @@ airspring.indexedDB.login = function() {
       
         server_data = { "user_hand" : hand, "user_ids": user_ids, "pin_tokens":pin_tokens }; 
         console.log(server_data);
-        $.ajax({ 
+        $.ajax({
+            
               url: url
             , type: 'POST'
             , data: server_data
@@ -203,11 +204,11 @@ airspring.indexedDB.login = function() {
                 console.log(resData);
                 if (resData.pin_valid) {
                     console.log("Pin Valid");
-                    redirectURL = "chrome-extension://"+location.host+"/launcher.html";
+                    redirectURL = "chrome-extension://"+location.host+"/launcher.html?id="+resData.result;
                     //setTimeout(function(){redirect_success(redirectURL)},500)
                 }else{
                     console.log("Pin Not Valid");
-                    redirectURL = "chrome-extension://"+location.host+"/pin.html";
+                    redirectURL = "chrome-extension://"+location.host+"/pin.html?id="+resData.result;
                     //setTimeout(function(){redirect_success(redirectURL)},500);
                 }
                 setTimeout(function(){redirect_success(redirectURL)},500);
@@ -245,23 +246,21 @@ function redirect_success () {
 //______________________________________________________________________________________________________________ 
 
 airspring.indexedDB.calcAvg_registration = function() {
-    
-    console.log("Here");
 
   var db = airspring.indexedDB.db;
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
-  //var data_total = [];
+  var data_total = [];
   var url = "http://airauth.cloudnode.co/api/hand/compute";
   var server_data = {};
   var keyRange = IDBKeyRange.lowerBound(0);
  
   
   //Array to store the total of all samples
-  //var current_total = [];
+  var current_total = [];
   var total = [];
   //Initialize to zeros
-  //for (var i = 0; i < 5; i++) { current_total[i] = 0; }
+  for (var i = 0; i < 20; i++) { current_total[i] = 0; }
   var count = 0;
   var total_index = 0;
   var user_email = $("#user_id").val();
@@ -304,36 +303,88 @@ airspring.indexedDB.calcAvg_registration = function() {
       return;
     }
 
+
+    //console.log("dbCount", count);
+    if (count == 20 || count == 40 || count == 60 || count == 80 || count == 99) {
+      //console.log("Current Total Length = ", current_total.length);
+      for (var i = 0; i < current_total.length; i++) { 
+        current_total[i] = current_total[i]/10;
+      }
+      total[total_index] = {
+        "indexMedialLength" : current_total[0],
+        "indexDistalLength" : current_total[1],
+        "middleMedialLength" : current_total[2],
+        "middleDistalLength" : current_total[3],
+        "ringMedialLength" : current_total[4],
+        "ringDistalLength" : current_total[5],
+        "pinkyMedialLength" : current_total[6],
+        "pinkyDistalLength" : current_total[7],
+        "thumbDistalLength" : current_total[8],
+        "indexMedialWidth" : current_total[9],
+        "indexDistalWidth" : current_total[10],
+        "middleMedialWidth" : current_total[11],
+        "middleDistalWidth" : current_total[12],
+        "ringMedialWidth" : current_total[13],
+        "ringDistalWidth" : current_total[15],
+        "pinkyMedialWidth" : current_total[15],
+        "pinkyDistalWidth" : current_total[16],
+        "thumbDistalWidth" : current_total[17],
+        "palmWidth" : current_total[18],
+        "left/right" : current_total[19],
+      }
+      total_index++;
+      for (var i = 0; i < 20; i++) { current_total[i] = 0; }
+    }
+
     var data = [];
   
     for(var x in result.value){
       data.push(result.value[x]);
     }
 
-    total[total_index] = {
-        "indexMedialLength" : data[0],
-        "indexDistalLength" : data[1],
-        "middleMedialLength" : data[2],
-        "middleDistalLength" : data[3],
-        "ringMedialLength" : data[4],
-        "ringDistalLength" : data[5],
-        "pinkyMedialLength" : data[6],
-        "pinkyDistalLength" : data[7],
-        "thumbDistalLength" : data[8],
-        "indexMedialWidth" : data[9],
-        "indexDistalWidth" : data[10],
-        "middleMedialWidth" : data[11],
-        "middleDistalWidth" : data[12],
-        "ringMedialWidth" : data[13],
-        "ringDistalWidth" : data[15],
-        "pinkyMedialWidth" : data[15],
-        "pinkyDistalWidth" : data[16],
-        "thumbDistalWidth" : data[17],
-        "palmWidth" : data[18],
-        "left/right" : data[19],
+    
+
+    if(count > 4 && count < 15){
+    
+      for (var i = 0; i < data.length; i++) { 
+        current_total[i] += data[i];
+      }
+
     }
-    total_index++;
-    count++; 
+    
+    if(count > 24 && count < 35){
+    
+      for (var i = 0; i < data.length; i++) { 
+        current_total[i] += data[i];
+      }
+
+    }
+    
+    if(count > 44 && count < 55){
+    
+      for (var i = 0; i < data.length; i++) { 
+        current_total[i] += data[i];
+      }
+
+    }
+    
+    if(count > 64 && count < 75){
+    
+      for (var i = 0; i < data.length; i++) { 
+        current_total[i] += data[i];
+      }
+
+    }
+    
+    if(count > 84 && count < 95){
+    
+      for (var i = 0; i < data.length; i++) { 
+        current_total[i] += data[i];
+      }
+
+    }
+
+    ++count; 
 
     result.continue();
   };

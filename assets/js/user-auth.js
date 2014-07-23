@@ -192,9 +192,11 @@ $('#user-login').submit(function() {
             success: function(resData) {
                   if (resData.valid) {
                             // console.log(resData);
+                            var test = resData.u_hash;
+                            console.log('test',test);
                             createCookie(
                                          '_airauth_'+resData.u_id,
-                                         '{"a_id": "'+resData.a_id+'", "u_hash": "'+resData.u_hash+'", "u_email": "'+resData.u_email+'", "id": "'+resData.u_id+'"}',
+                                         '{"a_id": "'+resData.a_id+'", "u_hash": '+test+', "u_email": "'+resData.u_email+'", "id": "'+resData.u_id+'"}',
                                          7
                             );
                             // Now Redirect to scan 
