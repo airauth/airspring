@@ -149,8 +149,6 @@ airspring.indexedDB.calcAvg_login = function() {
   for (var i = 0; i < 20; i++) { total[i] = 0; }
   var hand = {};
   var server_data = {};
-  //var user_email = $("#inputEmail").val();
-  //var user_password = $("#inputPassword").val();
   var count = 0;
   var cookie_user_data = getCookies();
   var user_ids = []; 
@@ -158,8 +156,14 @@ airspring.indexedDB.calcAvg_login = function() {
   for (var key in cookie_user_data) {
       var obj = cookie_user_data[key];
       user_ids.push(obj.id); 
-  } 
-
+  }; 
+  var pin_tokens = [];
+  var cookie_user_data = getPINCookies();
+  for (var key in cookie_user_data) {
+      var obj = cookie_user_data[key];
+      pin_tokens.push(obj.token); 
+  };
+  
   cursorRequest.onsuccess = function(e) {
     
     var result = e.target.result;
@@ -192,24 +196,36 @@ airspring.indexedDB.calcAvg_login = function() {
         "left/right" : total[19],
       }
       
-      server_data = { "user_hand" : hand, "user_ids": user_ids }; 
-      console.log(server_data);
-      $.ajax({ 
-              url: url
-            , type: 'POST'
-            , data: server_data
-            , complete: function() {
-            },
+      server_data = { "user_hand" : hand, "user_ids": user_ids, "pin_tokens": pin_tokens}; 
+      //console.log(server_data);
+      $.ajax({
+            
+        url: url
+        , type: 'POST'
+        , data: server_data
+        , complete: function() {
+        },
 
-            success: function(resData) {
-                console.log(resData);
-             },
+        success: function(resData) {
+          //console.log(resData);
+          if (resData.pin_valid) {
+              //console.log("Pin Valid");
+              redirectURL = "chrome-extension://"+location.host+"/launcher.html?id="+resData.result;
+              //setTimeout(function(){redirect_success(redirectURL)},500)
+          }else{
+              //console.log("Pin Not Valid");
+              redirectURL = "chrome-extension://"+location.host+"/pin.html?id="+resData.result;
+              //setTimeout(function(){redirect_success(redirectURL)},500);
+          }
+          setTimeout(function(){redirect_success(redirectURL)},500);
+        },
 
-            error: function(error) {
-               console.log(error.responseText);
-               
-             },
-          });
+        error: function(error) {
+          redirectURL = "chrome-extension://"+location.host+"/scan.html?message=1";
+          //console.log(error.responseText);
+          setTimeout(function(){redirect_error(redirectURL)},500)
+        },
+      });
   
       return;
     }
@@ -239,6 +255,14 @@ airspring.indexedDB.calcAvg_login = function() {
 
 //______________________________________________________________________________________________________________ 
 
+function redirect_error (redirectURL) {
+    chrome.extension.sendRequest({redirect: redirectURL});
+}
+function redirect_success () {
+    chrome.extension.sendRequest({redirect: redirectURL});
+}
+//______________________________________________________________________________________________________________ 
+
 airspring.indexedDB.calcAvg_registration = function() {
 
   var db = airspring.indexedDB.db;
@@ -258,7 +282,7 @@ airspring.indexedDB.calcAvg_registration = function() {
   var count = 0;
   var total_index = 0;
   var user_email = $("#user_id").val();
-  console.log(user_email); 
+  //console.log(user_email); 
 
   //Request open
   var cursorRequest = store.openCursor(keyRange);
@@ -270,18 +294,17 @@ airspring.indexedDB.calcAvg_registration = function() {
     //No more in DataBase
     if(!!result == false) {
     server_data = { "user_hand" : total, "user_email": user_email }; 
-      console.log(server_data);
+      //console.log(server_data);
       
       $.ajax({ 
               url: url
             , type: 'POST'
             , data: server_data
             , complete: function() {
-                  console.log("Submitted!"); 
+                //console.log("Submitted!"); 
             },
 
             success: function(resData) {
-              console.log("here");
                 if(resData){
                   $('#leap-hand-register-complete').show();
                   //console.log("here");
@@ -289,11 +312,11 @@ airspring.indexedDB.calcAvg_registration = function() {
              },
 
             error: function(error) {
-               console.log(error.responseText);
+               //console.log(error.responseText);
              },
           });
 
-      console.log(total);
+      //console.log(total);
       return;
     }
 
@@ -390,7 +413,7 @@ airspring.indexedDB.calcAvg_registration = function() {
 //______________________________________________________________________________________________________________
 
 airspring.indexedDB.addHandData = function(frame) {
-  console.log("here");
+  //console.log("here");
   var db = airspring.indexedDB.db;
   var trans = db.transaction(["airspring_handdata"], "readwrite");
   var store = trans.objectStore("airspring_handdata");
@@ -458,9 +481,9 @@ function addHandData(frame) {
 function deleteDB(dbname){
   var req = indexedDB.deleteDatabase(dbname);
   req.onsuccess = function () {
-    console.log("Deleted database successfully");
+    //console.log("Deleted database successfully");
   };
   req.onerror = function () {
-    console.log("Couldn't delete database");
+    //console.log("Couldn't delete database");
   }
 }

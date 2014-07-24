@@ -65,11 +65,19 @@ chrome.runtime.onMessage.addListener(
         }
 });
 
+function exec_launch(url) {
+    //console.log('Here');
+    //launch page with url = url
+    chrome.windows.create({url: url, incognito: true}, function (result){
+        opened_window_id = result.tabs[0].id;        
+    });
+};
+
 function launchpage(password, email, site, a_key, u_hash){
 
     //convert u_hash object to string
     var u_hash_string = JSON.stringify(u_hash);
-    console.log(u_hash_string);
+    //console.log(u_hash_string);
     //decrypt u_hash
     var u_hash_decrypted = CryptoJS.AES.decrypt(u_hash_string, a_key, { format: JsonFormatter });
     u_hash_string = u_hash_decrypted.toString(CryptoJS.enc.Utf8);
@@ -101,10 +109,9 @@ function launchpage(password, email, site, a_key, u_hash){
         launch_site = site;
         url = twitter_url;
     }
-    //launch page with url = url
-    chrome.windows.create({url: url, incognito: true}, function (result){
-        opened_window_id = result.tabs[0].id;        
-    });
+    setTimeout(function(){exec_launch(url)},500);
 }
+
+
 
 
