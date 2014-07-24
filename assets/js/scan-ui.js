@@ -57,6 +57,13 @@ jQuery(document).ready(function ($) {
 	   return params;
 	};
 	url_query = parseQueryString(url_query);
+	if (url_query.id != null) {
+		var cookie = getOneCookie(url_query.id);
+		var obj = JSON.parse(cookie);
+		//console.log(obj.u_email);
+		$('#user_logged').html('Welcome '+ obj.u_email);
+	}
+	
 	
 	function fadeOutAlert() {
 		$("#dashboard-messages").delay(4000).fadeOut(function() {
@@ -66,16 +73,17 @@ jQuery(document).ready(function ($) {
 	
 	
 	if (url_query.message == 1) {
-		$('#fade_message').html('Hand could no reliably be dectected. Please scan your hand again.')
+		$('#fade_message').html('Could not reliably determine hand. Please scan again.')
 		//console.log('message=',url_query.message);
 		fadeOutAlert();
-	}else if (url_query.message == 70) {
+	}else if (url_query.message == 2) {
 		$('#fade_message').html('Something went wrong. Please try again.')
 		//console.log('message=',url_query.message);
 		fadeOutAlert();
 	}else{
 		$("#dashboard-messages").remove();
 	}
+	
 	
 
 	var controller = new Leap.Controller();

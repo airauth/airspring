@@ -150,7 +150,7 @@ airspring.indexedDB.calcAvg_login = function() {
   var hand = {};
   var server_data = {};
   var count = 0;
-  var cookie_user_data = getCookies();
+  /*var cookie_user_data = getCookies();
   var user_ids = []; 
   // Now Parse Object Data 
   for (var key in cookie_user_data) {
@@ -162,7 +162,7 @@ airspring.indexedDB.calcAvg_login = function() {
   for (var key in cookie_user_data) {
       var obj = cookie_user_data[key];
       pin_tokens.push(obj.token); 
-  };
+  };*/
   
   cursorRequest.onsuccess = function(e) {
     
@@ -196,8 +196,8 @@ airspring.indexedDB.calcAvg_login = function() {
         "left/right" : total[19],
       }
       
-      server_data = { "user_hand" : hand, "user_ids": user_ids, "pin_tokens": pin_tokens}; 
-      //console.log(server_data);
+      server_data = { "user_hand" : hand}; 
+      console.log(server_data);
       $.ajax({
             
         url: url
@@ -207,17 +207,19 @@ airspring.indexedDB.calcAvg_login = function() {
         },
 
         success: function(resData) {
-          //console.log(resData);
-          if (resData.pin_valid) {
+          console.log(resData);
+          if (resData.valid) {
               //console.log("Pin Valid");
-              redirectURL = "chrome-extension://"+location.host+"/launcher.html?id="+resData.result;
-              //setTimeout(function(){redirect_success(redirectURL)},500)
-          }else{
-              //console.log("Pin Not Valid");
-              redirectURL = "chrome-extension://"+location.host+"/pin.html?id="+resData.result;
-              //setTimeout(function(){redirect_success(redirectURL)},500);
+              
+              createCookie(
+                '_airh_'+resData.id,
+                '{"token": "'+resData.token+'"}',
+                0.00964444
+              );
+              
+              redirectURL = "chrome-extension://"+location.host+"/launcher.html?id="+resData.id;
+              setTimeout(function(){redirect_success(redirectURL)},500)
           }
-          setTimeout(function(){redirect_success(redirectURL)},500);
         },
 
         error: function(error) {

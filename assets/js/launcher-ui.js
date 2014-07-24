@@ -56,6 +56,7 @@ jQuery(document).ready(function ($) {
 	url_query = parseQueryString(url_query);
 	if (url_query.id != null) {
 		var cookie = getOneCookie(url_query.id);
+		console.log(cookie);
 		var obj = JSON.parse(cookie);
 		//console.log(obj.u_email);
 		$('#user_logged').html('Welcome '+ obj.u_email);
@@ -245,16 +246,16 @@ jQuery(document).ready(function ($) {
 						success: function(idData) {
 							
 							createCookie(
-								       '_airp_'+resData.id,
-								       '{"token": "'+resData.token+'"}',
+								       '_airh_'+idData.id,
+								       '{"token": "'+idData.token+'"}',
 								       0.00964444
 							);
 							//console.log(idData);
 							show_message("hand-alerts", 'success', 'Launching&nbsp;&nbsp;'+resData.result[0].name+'<br>with gesture&nbsp;&nbsp;'+gestureName);
 							launchpage(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
 									    
-							var redirectURL = "chrome-extension://"+location.host+"/scan.html?id="+url_query.id;
-							setTimeout(function(){redirect_success(redirectURL)},10000);
+							var redirectURL = "chrome-extension://"+location.host+"/pin.html";
+							setTimeout(function(){redirect_success(redirectURL)},8000);
 						 },
 				    
 						error: function(error) {
@@ -270,11 +271,11 @@ jQuery(document).ready(function ($) {
 				
 				error: function(error) {
 					if (error.responseJSON.code == 69) {
-						redirectURL = "chrome-extension://"+location.host+"/scan.html";
+						redirectURL = "chrome-extension://"+location.host+"/pin.html?message=2";
 					}else if (error.responseJSON.code == 70) {
-						redirectURL = "chrome-extension://"+location.host+"/scan.html?message="+error.responseJSON.code;//something went wrong please try again
+						redirectURL = "chrome-extension://"+location.host+"/pin.html?message=2";//something went wrong please try again
 					}else if (error.responseJSON.code == 71) {
-						redirectURL = "chrome-extension://"+location.host+"/launcher.html?message="+error.responseJSON.code;//so site found for given pose
+						redirectURL = "chrome-extension://"+location.host+"/launcher.html?id="+error.responseJSON.id+"&message="+error.responseJSON.code;//so site found for given pose
 					}
 				    //redirectURL = "chrome-extension://"+location.host+"/launch.html";
 				    //console.log(error.responseJSON.code);

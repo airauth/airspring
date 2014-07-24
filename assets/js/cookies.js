@@ -59,14 +59,14 @@ function getOneCookie(id) {
 //}
 
 // Get Air.Auth Cookies 
-function getPINCookies() {
+function getHandCookies() {
     var cookies = $.cookie();
     var keys_to_delete = [];
     var parsed_cookies = {};
     //console.log(cookies);
     for( var key in cookies){
         //console.log(key);
-        if (key.indexOf('_airp') == -1) {
+        if (key.indexOf('_airh') == -1) {
             //console.log('delete');
             //delete cookies[key];
             keys_to_delete.push(key);

@@ -200,7 +200,7 @@ $('#user-login').submit(function() {
                                          7
                             );
                             // Now Redirect to scan 
-                            var redirectURL = "chrome-extension://"+location.host+"/scan.html";
+                            var redirectURL = "chrome-extension://"+location.host+"/pin.html";
                             chrome.extension.sendRequest({redirect: redirectURL}); 
                   } 
              },
