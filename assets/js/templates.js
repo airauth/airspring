@@ -26,6 +26,7 @@ $.ajax({
                     var index = keys.indexOf(resData.result[i]);
                     
                     if (index != -1 ) {
+                        console.log("here");
                         deleteCookie('_airauth_'+ids[index]);
                     }
                     var cookie_user_data = getCookies();
@@ -66,11 +67,8 @@ for (var key in cookie_user_data) {
     users.push(obj.u_email); 
 } 
 // Now Render Navbar for Launcher 
-var navbar__launcher_error_html = new EJS({url: '../../templates/navbar-launcher-error.ejs'}).render(users); 
-$('#navbar_launcher-error').html(navbar__launcher_error_html);
+
 var navbar__launcher_html = new EJS({url: '../../templates/navbar-launcher.ejs'}).render(users); 
 $('#navbar_launcher').html(navbar__launcher_html);
-var navbar__launcher_PIN_error_html = new EJS({url: '../../templates/navbar-launcher-pin-error.ejs'}).render(users); 
-$('#navbar_launcher_PIN_error').html(navbar__launcher_PIN_error_html); 
 var navbar__recorder_html = new EJS({url: '../../templates/navbar-recorder.ejs'});
 $('#navbar_recorder').html(navbar__recorder_html.text);
