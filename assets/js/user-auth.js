@@ -1,150 +1,123 @@
-$("#inputRePassword").change(function(){
-              
-              var pswd_ag = $(this).val();
-              if ( pswd_ag.length < 5 ) {
-                           $(this).parent().addClass('has-error');
-                           $("#inputPassword").parent().addClass('has-error');
-                           $('#register-btn').attr( 'disabled', true );
-              }
-              else{
-                            $("#error").hide();
-                            $("#inputRePassword").keyup(function () {
-                                       if( $(this).val() != $("#inputPassword").val() ){
-                                             $(this).parent().removeClass('has-error');
-                                             $("#inputPassword").parent().removeClass('has-error');
-                                             
-                                             $(this).parent().addClass('has-error');
-                                             $("#inputPassword").parent().addClass('has-error');
-                                             
-                                             $('#register-btn').attr( 'disabled', true );
-                                             
-                                             $(this).parent().removeClass('has-success');
-                                             $("#inputPassword").parent().removeClass('has-success');
-                                             
-                                       }
-                                       else{
-                                           $(this).parent().removeClass('has-success');
-                                           $("#inputPassword").parent().removeClass('has-error');
-                                           
-                                           $('#register-btn').removeAttr('disabled');
-                                           
-                                           $(this).parent().addClass('has-success');
-                                           $("#inputPassword").parent().addClass('has-success');
-                                       }
-                                     }).keyup();       
-              }});
-            
-            $("#inputPassword").change(function(){
-              var pswd = $(this).val();
-              if ( pswd.length < 5 ) {
-                           $(this).parent().addClass('has-error');
-                           $("#inputPassword").parent().addClass('has-error');
-                           $('#register-btn').attr( 'disabled', true );
-              }
-              else{
-                            $("#error").hide();
-              
-                            $("#inputPassword").keyup(function () {
-                                              if( $(this).val() != $("#inputRePassword").val() ){
-                                                    $(this).parent().removeClass('has-error');
-                                                    $("#inputRePassword").parent().removeClass('has-error');
-                                                    
-                                                    $(this).parent().addClass('has-error');
-                                                    $("#inputRePassword").parent().addClass('has-error');
-                                                    
-                                                    $('#register-btn').attr( 'disabled', true );
-                                                    
-                                                    $(this).parent().removeClass('has-success');
-                                                    $("#inputRePassword").parent().removeClass('has-success');
-                                                    
-                                              }
-                                              else{
-                                                  $(this).parent().removeClass('has-success');
-                                                  $("#inputRePassword").parent().removeClass('has-error');
-                                                  
-                                                  $('#register-btn').removeAttr('disabled');
-                                                  
-                                                  $(this).parent().addClass('has-success');
-                                                  $("#inputRePassword").parent().addClass('has-success');
-                                              }
-                                            }).keyup();
-              }});
-            
-            $("#inputPIN").change(function(){
-              var pswd = $(this).val();
-              if ( pswd.length < 4 ) {
-                           $(this).parent().addClass('has-error');
-                           $("#inputPIN").parent().addClass('has-error');
-                           $('#register-btn').attr( 'disabled', true );
-              }
-              else{
-                            $("#error").hide();
-              
-                            $("#inputPIN").keyup(function () {
-                                              if( $(this).val() != $("#inputRePIN").val() ){
-                                                    $(this).parent().removeClass('has-error');
-                                                    $("#inputRePIN").parent().removeClass('has-error');
-                                                    
-                                                    $(this).parent().addClass('has-error');
-                                                    $("#inputRePIN").parent().addClass('has-error');
-                                                    
-                                                    $('#register-btn').attr( 'disabled', true );
-                                                    
-                                                    $(this).parent().removeClass('has-success');
-                                                    $("#inputRePIN").parent().removeClass('has-success');
-                                                    
-                                              }
-                                              else{
-                                                  $(this).parent().removeClass('has-success');
-                                                  $("#inputRePIN").parent().removeClass('has-error');
-                                                  
-                                                  $('#register-btn').removeAttr('disabled');
-                                                  
-                                                  $(this).parent().addClass('has-success');
-                                                  $("#inputRePIN").parent().addClass('has-success');
-                                              }
-                                            }).keyup();
-              }});
-$("#inputRePIN").change(function(){
-              
-              var pswd_ag = $(this).val();
-              if ( pswd_ag.length < 4 ) {
-                           $(this).parent().addClass('has-error');
-                           $("#inputPIN").parent().addClass('has-error');
-                           $('#register-btn').attr( 'disabled', true );
-              }
-              else{
-                            $("#error").hide();
-                            $("#inputRePIN").keyup(function () {
-                                       if( $(this).val() != $("#inputPIN").val() ){
-                                             $(this).parent().removeClass('has-error');
-                                             $("#inputPIN").parent().removeClass('has-error');
-                                             
-                                             $(this).parent().addClass('has-error');
-                                             $("#inputPIN").parent().addClass('has-error');
-                                             
-                                             $('#register-btn').attr( 'disabled', true );
-                                             
-                                             $(this).parent().removeClass('has-success');
-                                             $("#inputPIN").parent().removeClass('has-success');
-                                             
-                                       }
-                                       else{
-                                           $(this).parent().removeClass('has-success');
-                                           $("#inputPIN").parent().removeClass('has-error');
-                                           
-                                           $('#register-btn').removeAttr('disabled');
-                                           
-                                           $(this).parent().addClass('has-success');
-                                           $("#inputPIN").parent().addClass('has-success');
-                                       }
-                                     }).keyup();       
-              }});
-            
-            
-            
-            
-            
+//______________________________________________________________________________________________________________________
+//________________________________________Registration Page Validation JS_______________________________________________
+
+$(".register_password_class").keyup(function(){
+  // perform checks, all return bools
+  top_length_flag = check_length('#inputPassword',5);
+  bottom_length_flag = check_length('#inputRePassword',5);
+  match_flag = check_match('#inputPassword','#inputRePassword');
+  pin_flag = check_pin('#pin_div');
+
+  // if all true, enable submit button, set calsses to success
+  if(match_flag && top_length_flag && bottom_length_flag && check_pin('#pin_div')) {
+    $('#register-btn').removeAttr('disabled');
+    $('#help-password').html('');
+    $('#help-retype-password').html('');
+    has_success('#inputRePassword');
+    has_success('#inputPassword');
+    return;
+  }
+  else {
+    $('#register-btn').attr( 'disabled', true );
+  }
+
+  if(match_flag && top_length_flag && bottom_length_flag) {
+    has_success('#inputRePassword');
+    has_success('#inputPassword');
+  }
+
+  // if top field length failed display help, set class to warning
+  if(!top_length_flag) {
+    $('#help-password').html('Password must be at least 5 symbols long');
+    return;
+  }
+  else {
+    $('#help-password').html('');
+  }
+
+  // if bottom field length failed display help, set class to warning 
+  if(!bottom_length_flag) {
+    $('#help-retype-password').html('Password must be at least 5 symbols long');
+    return;
+  }
+  else {
+    $('#help-retype-password').html('');
+  }
+
+  // if fields did not match display help, set class to warning, disable
+  if(!match_flag) {
+    $('#help-password').html('Passwords do not match');
+    $('#help-retype-password').html('Password do not match');
+  }
+  else {
+    $('#help-password').html('');
+    $('#help-retype-password').html('');
+  }
+});
+
+$(".register_pin_class").change(function(){
+  if(!check_pin('#pin_div'))
+    $('#register-btn').attr( 'disabled', true );
+  else {
+    $('#register-btn').removeAttr('disabled');
+  }
+}); 
+
+
+//______________________________________________________________________________________________________________________
+//_______________________________________________Helper Functions_______________________________________________________
+
+function check_match(field_id,check_id){
+  if($(field_id).val() !== $(check_id).val()){
+    has_error(field_id);
+    has_error(check_id);
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+
+function check_length(field_id,length) {
+  field_val = $(field_id).val();
+  if ( field_val.length < length ) {
+    has_error(field_id);
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+
+function has_error(field_id) {
+  $(field_id).parent().removeClass('has-error');
+  $(field_id).parent().removeClass('has-success');
+  $(field_id).parent().addClass('has-error');
+}
+
+function has_success(field_id) {
+  $(field_id).parent().removeClass('has-error');
+  $(field_id).parent().removeClass('has-success');
+  $(field_id).parent().addClass('has-success');
+}
+
+function check_pin(select_id) {
+  p_1 = $(select_id).find('#pin_select_1 option:selected').val();
+  p_2 = $(select_id).find('#pin_select_2 option:selected').val();
+  p_3 = $(select_id).find('#pin_select_3 option:selected').val();
+  p_4 = $(select_id).find('#pin_select_4 option:selected').val();
+
+  if(p_1 === '0' || p_2 === '0' || p_3 === '0' || p_4 === '0') {
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+
+//______________________________________________________________________________________________________________________
+//______________________________________________________________________________________________________________________
+                                
 // User registration
 $('#user-registration').submit(function() {
     var data = $('#user-registration').serialize();
