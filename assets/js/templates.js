@@ -30,7 +30,7 @@ $.ajax({
                         deleteCookie('_airauth_'+ids[index]);
                     }
                     var cookie_user_data = getCookies();
-                    if (current_page != '/login.html') {
+                    if (current_page != '/login.html' && current_page != '/register.html') {
                         if (jQuery.isEmptyObject(cookie_user_data)) {
                             redirectURL = "chrome-extension://"+location.host+"/login.html";
                             // Redirect to URL 
@@ -45,7 +45,7 @@ $.ajax({
 	error: function(error) {
             var cookie_user_data = getCookies();
                     
-            if (current_page != '/login.html') {
+            if (current_page != '/login.html' && current_page != '/register.html') {
                 if (jQuery.isEmptyObject(cookie_user_data)) {
                     redirectURL = "chrome-extension://"+location.host+"/login.html";
                     // Redirect to URL 
