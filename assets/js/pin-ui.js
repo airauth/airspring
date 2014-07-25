@@ -90,15 +90,16 @@ jQuery(document).ready(function ($) {
 	/*
 	 * We get the DOM crawling done now during setup, so it's not consuming cycles at runtime.
 	 */
-	var 	win				= $(window),
+	var win					= $(window),
 		renderArea 			= $('#render-area'),
 		main				= $('#main'),
-		wegGlWarning			= $('#webgl-warning'),
+		wegGlWarning		= $('#webgl-warning'),
 		virtualhand			= $('#virtualhand'),
 		PINCode				= [],
+		PINCount			= 0,
 		scan				= true,
-		url				= "http://airauth.cloudnode.co/api/pin/authenticate",
-		thumbleft_count			= 0,
+		url					= "http://airauth.cloudnode.co/api/pin/authenticate",
+		thumbleft_count		= 0,
 		/*
 		 * We set up the WebGL renderer - switching to a canvas renderer if needed
 		 */
@@ -108,7 +109,7 @@ jQuery(document).ready(function ($) {
 		/*
 		 * Some constant colors are declared for interface modifications
 		 */
-		red				= '#EE5A40',
+		red					= '#EE5A40',
 		white				= '#FFFFFF',
 		black				= '#000000',
 		grey				= '#848484',
@@ -117,12 +118,12 @@ jQuery(document).ready(function ($) {
 		 * The WebGL variables, materials, and geometry
 		 */
 		material 			= new THREE.MeshBasicMaterial({color: black }),		// The normal material used to display hands and fingers
-		recordingMaterial 		= new THREE.MeshBasicMaterial({color: grey }),	// The material used on hands and fingers during recording
-		palmGeometry 			= new THREE.CubeGeometry(60, 10, 60),				// The geometry of a palm
-		fingerGeometry 			= webGl ? new THREE.SphereGeometry(5, 20, 10) : new THREE.TorusGeometry(1, 5, 5, 5), // The geometry of a finger (simplified if using a canvas renderer)
+		recordingMaterial 	= new THREE.MeshBasicMaterial({color: grey }),	// The material used on hands and fingers during recording
+		palmGeometry 		= new THREE.CubeGeometry(60, 10, 60),				// The geometry of a palm
+		fingerGeometry 		= webGl ? new THREE.SphereGeometry(5, 20, 10) : new THREE.TorusGeometry(1, 5, 5, 5), // The geometry of a finger (simplified if using a canvas renderer)
 
 		camera 				= new THREE.PerspectiveCamera(45, 2/1, 1, 3000),
-		cameraInitialPos		= new THREE.Vector3(0, 0, 450),
+		cameraInitialPos	= new THREE.Vector3(0, 0, 450),
 		scene 				= new THREE.Scene(),
 		controls 			= new THREE.OrbitControls(camera, renderer.domElement),
 
@@ -215,12 +216,12 @@ jQuery(document).ready(function ($) {
 		//console.log(gestureName);
 		var message_contents = $('#hand-alerts').text();
 		
-		if (gestureName == "THUMB-RIGHT" && scan == true) {
+		if (gestureName == "THUMB-RIGHT" && scan === true) {
 			if (PINCode.length < 4) {
-;				show_message("hand-alerts", 'danger', 'PIN must be at least 4 digits');
+				show_message("hand-alerts", 'danger', 'PIN must be at least 4 digits');
 				setTimeout(function() {show_message("hand-alerts", 'info', message_contents );}, 1500);
-			}else{
-				
+			}
+			else{	
 				var cookie_user_data = getCookies();
 				var user_ids = []; 
 				// Now Parse Object Data 
@@ -233,7 +234,7 @@ jQuery(document).ready(function ($) {
 				for (var key in cookie_user_data) {
 				    var obj = cookie_user_data[key];
 				    hand_tokens.push(obj.token); 
-				};
+				}
 				
 				show_message("hand-alerts", 'success', 'Entered');
 				scan = false;
@@ -273,41 +274,23 @@ jQuery(document).ready(function ($) {
 			}
 		}
 		//console.log(message_contents.charAt(0));
-		if (gestureName == "THUMB-LEFT" && message_contents.charAt(0) != "P" && scan == true) {
-			message_contents = message_contents.slice(0, -2);
-			if (message_contents == "") {
-				$('#hand-alerts').text("Please enter your PIN");
-			} else {
-				$('#hand-alerts').text(message_contents);	
-			}
+		if (gestureName == "THUMB-LEFT" && scan === true) {
 			PINCode.pop();
-		}/*else if (gestureName == "THUMB-LEFT" && message_contents.charAt(0) == "P" && scan == true) {
-			//thumbleft_count++;
-			if (thumbleft_count >1) {
-				redirectURL = "chrome-extension://"+location.host+"/scan.html";
-				chrome.extension.sendRequest({redirect: redirectURL});
-			}
-			
-		}*/else if(gestureName != "THUMB-LEFT" && scan == true && gestureName != "THUMB-RIGHT") {
+			$("#pin_"+pose_number).html("_");
+			$("#pin_pose_display").html("");
+			PINCount = PINCount - 1;
+		}	
+		else if(gestureName != "THUMB-LEFT" && scan === true && gestureName != "THUMB-RIGHT" && PINCount < 4) {
+			PINCount = PINCount + 1;
 			PINCode.push(gestureName);
-			if (message_contents.charAt(0) == "*") {
-				var message_contents_final = message_contents.concat("* ");
-				//var message_contents_tmp = message_contents.concat(gestureName.charAt(0)+" ");
-				$('#hand-alerts').text(message_contents_final);
-				//setTimeout(function() {changeText(message_contents_final)}, 1000);
-				
-			}else{
-				$('#hand-alerts').text("* ");
-				//$('#hand-alerts').text(gestureName.charAt(0)+" ");
-				//setTimeout(function() {changeText("* ")}, 1000);
-			}
-		}
-		
-		
+			pose_number = getureName.charAt(0);
+			$("#pin_"+pose_number).html("*");
+			$("#pin_pose_display").html(gestureName);
+		}	
 	});
 	
 	function changeText(message) {
-		$('#hand-alerts').text(message)
+		$('#hand-alerts').text(message);
 	}
 	function redirect_error (redirectURL) {
 		chrome.extension.sendRequest({redirect: redirectURL});

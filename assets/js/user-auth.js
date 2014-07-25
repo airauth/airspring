@@ -28,7 +28,7 @@ $(".register_password_class").keyup(function(){
 
   // if top field length failed display help, set class to warning
   if(!top_length_flag) {
-    $('#help-password').html('Password must be at least 5 symbols long');
+    $('#help-password').html('Password must be at least 5 characters long');
     return;
   }
   else {
@@ -37,7 +37,7 @@ $(".register_password_class").keyup(function(){
 
   // if bottom field length failed display help, set class to warning 
   if(!bottom_length_flag) {
-    $('#help-retype-password').html('Password must be at least 5 symbols long');
+    $('#help-retype-password').html('Password must be at least 5 characters long');
     return;
   }
   else {
@@ -130,11 +130,10 @@ $('#user-registration').submit(function() {
             },
 
             success: function(resData) {
-                  //console.log(resData.user_email);
+                  console.log(resData.user_email);
                   $('#user_id').val(resData.user_email);
                   $('#user-registration').hide();
                   $('#leap-hand-register').show();
-                  show_hand_shaddow();
                   // Create a new object store
                   // var request = window.indexedDB.open("airspringUserStore", 2);
              },
