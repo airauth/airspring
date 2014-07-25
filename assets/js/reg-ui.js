@@ -205,7 +205,7 @@ function show_hand_shaddow(){
 	 */
 	function updateDimensions() {
 
-		windowHeight 		= main.innerHeight();
+		windowHeight 		= main.innerHeight()-200;
 		
 		windowWidth 		= virtualhand.innerWidth();
 

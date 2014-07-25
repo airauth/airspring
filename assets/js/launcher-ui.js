@@ -255,7 +255,7 @@ jQuery(document).ready(function ($) {
 							launchpage(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
 									    
 							var redirectURL = "chrome-extension://"+location.host+"/pin.html";
-							setTimeout(function(){redirect_success(redirectURL)},8000);
+							//setTimeout(function(){redirect_success(redirectURL)},10000);
 						 },
 				    
 						error: function(error) {

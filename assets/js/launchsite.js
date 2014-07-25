@@ -51,6 +51,10 @@ var JsonFormatter = {
     }
 };
 
+function redirect_success (redirectURL) {
+        chrome.extension.sendRequest({redirect: redirectURL});
+}
+
 //Listen to message from launched site
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -62,6 +66,8 @@ chrome.runtime.onMessage.addListener(
             sendResponse({username: launch_username, password: launch_password, site: launch_site});
             launch_username = null;
             launch_password = null;
+            var redirectURL = "chrome-extension://"+location.host+"/pin.html";
+            setTimeout(function(){redirect_success(redirectURL)},1000);
         }
 });
 
@@ -74,7 +80,10 @@ function exec_launch(url) {
 };
 
 function launchpage(password, email, site, a_key, u_hash){
-
+    
+    //console.log(password, email, site, a_key, u_hash);
+    
+    
     //convert u_hash object to string
     var u_hash_string = JSON.stringify(u_hash);
     //console.log(u_hash_string);
@@ -86,6 +95,7 @@ function launchpage(password, email, site, a_key, u_hash){
     var password_decrypted = CryptoJS.AES.decrypt(password,u_hash_string, { format: JsonFormatter });
     var email_string = email_decrypted.toString(CryptoJS.enc.Utf8);
     var password_string = password_decrypted.toString(CryptoJS.enc.Utf8);
+    //console.log(password_string, email_string, site, a_key, u_hash);
     //console.log(decrypted.toString(CryptoJS.enc.Utf8));
     launch_username = email_string;
     launch_password = password_string;
