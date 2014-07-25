@@ -314,7 +314,9 @@ airspring.indexedDB.calcAvg_registration = function() {
              },
 
             error: function(error) {
-               //console.log(error.responseText);
+              console.log(error.responseText);
+              redirectURL = "chrome-extension://"+location.host+"/register.html?message=1";
+              setTimeout(function(){redirect_error(redirectURL)},500)
              },
           });
 

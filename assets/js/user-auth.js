@@ -130,10 +130,11 @@ $('#user-registration').submit(function() {
             },
 
             success: function(resData) {
-                  console.log(resData.user_email);
+                  //console.log(resData.user_email);
                   $('#user_id').val(resData.user_email);
                   $('#user-registration').hide();
                   $('#leap-hand-register').show();
+                  show_hand_shaddow();
                   // Create a new object store
                   // var request = window.indexedDB.open("airspringUserStore", 2);
              },
