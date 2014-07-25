@@ -197,7 +197,7 @@ airspring.indexedDB.calcAvg_login = function() {
       }
       
       server_data = { "user_hand" : hand}; 
-      console.log(server_data);
+      //console.log(server_data);
       $.ajax({
             
         url: url
@@ -207,7 +207,7 @@ airspring.indexedDB.calcAvg_login = function() {
         },
 
         success: function(resData) {
-          console.log(resData);
+          //console.log(resData);
           if (resData.valid) {
               //console.log("Pin Valid");
               
@@ -316,7 +316,7 @@ airspring.indexedDB.calcAvg_registration = function() {
              },
 
             error: function(error) {
-              console.log(error.responseText);
+              //console.log(error.responseText);
               redirectURL = "chrome-extension://"+location.host+"/register.html?message=1";
               setTimeout(function(){redirect_error(redirectURL)},500)
              },
@@ -461,7 +461,7 @@ airspring.indexedDB.addHandData = function(frame) {
   };
 
   request.onerror = function(e) {
-    console.log(e.value);
+    //console.log(e.value);
   };
 };
 

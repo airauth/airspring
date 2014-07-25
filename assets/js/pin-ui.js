@@ -215,10 +215,10 @@ jQuery(document).ready(function ($) {
 		
 		//console.log(gestureName);
 		var message_contents = $('#hand-alerts').text();
-		console.log(gestureName);
-		console.log('scan = ', scan);
+		//console.log(gestureName);
+		//console.log('scan = ', scan);
 		if (gestureName == "THUMB-RIGHT" && scan === true) {
-			console.log("Here");
+			//console.log("Here");
 			if (PINCode.length < 4) {
 				show_message("hand-alerts", 'danger', 'PIN must be at least 4 digits');
 				setTimeout(function() {show_message("hand-alerts", 'info', message_contents );}, 1500);
@@ -241,7 +241,7 @@ jQuery(document).ready(function ($) {
 				show_message("hand-alerts", 'success', 'Entered');
 				scan = false;
 				var data = {'pin': PINCode.join(""), 'user_ids':user_ids, 'hand_tokens':hand_tokens};
-				console.log(data);
+				//console.log(data);
 				$.ajax({ 
 					url: url
 					, type: 'POST'
@@ -256,7 +256,7 @@ jQuery(document).ready(function ($) {
 							       '{"token": "'+resData.token+'"}',
 							       0.00964444
 						);*/
-					    console.log(resData);
+					    //console.log(resData);
 					    if (resData.token != null) {
 						redirectURL = "chrome-extension://"+location.host+"/launcher.html?id="+resData.id;
 						//console.log(redirectURL);

@@ -130,7 +130,7 @@ $('#user-registration').submit(function() {
             },
 
             success: function(resData) {
-                  console.log(resData.user_email);
+                  //console.log(resData.user_email);
                   $('#user_id').val(resData.user_email);
                   $('#user-registration').hide();
                   $('#leap-hand-register').show();
@@ -140,13 +140,13 @@ $('#user-registration').submit(function() {
              },
 
             error: function(error) {
-               console.log(error.responseText);
+               //console.log(error.responseText);
              },
           });
           
               
     
-    console.log($('#user-registration').serialize());
+    //console.log($('#user-registration').serialize());
     return false;
 
 });
@@ -164,7 +164,7 @@ $('#user-login').submit(function() {
                   user_ids.push(obj.id);
                   auth_ids.push(obj.a_id);
               };
-    console.log(auth_ids);
+    //console.log(auth_ids);
     // Get registration form data
     data["user_ids"]=user_ids;
     data["email"]=$('#inputEmail').val();
@@ -181,12 +181,12 @@ $('#user-login').submit(function() {
             },
 
             success: function(resData) {
-                  console.log('resdata = ',resData);
+                  //console.log('resdata = ',resData);
                   if (resData.valid) {
                             // console.log(resData);
                             if (typeof resData.duplicate_ids != "undefined") {
                                           for(var index = 0; index < resData.duplicate_ids.length; index++){
-                                                        console.log('delete cookie _airauth_'+resData.duplicate_ids[index]);
+                                                        //console.log('delete cookie _airauth_'+resData.duplicate_ids[index]);
                                                         deleteCookie("_airauth_"+resData.duplicate_ids[index]);
                                           }
                                           
@@ -203,7 +203,7 @@ $('#user-login').submit(function() {
              },
 
             error: function(error) {
-              console.log(error.responseJSON); 
+              //console.log(error.responseJSON); 
                if (!error.responseJSON.valid) {
                             $('.login-message').addClass('alert-danger').html('Invalid username or password!'); 
                             $('.login-message').show(); 

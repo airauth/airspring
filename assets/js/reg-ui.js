@@ -80,7 +80,7 @@ function fadeOutAlert() {
 $('.pin_class').change(function(){
     for(var i = 1; i <= 4; i++) {
 	if($('#pin_select_'+i+' option:selected').val() != 0) {
-	    console.log('<img src=/assets/img/hands/"'+$('#pin_select_'+i+' option:selected').val()+'.png">');
+	    //console.log('<img src=/assets/img/hands/"'+$('#pin_select_'+i+' option:selected').val()+'.png">');
 	    $('#image'+i).html('<img src="/assets/img/hands/'+$('#pin_select_'+i+' option:selected').val()+'.png" style="height: 130px; width=150px; background-color: #B8B6B6;" class="img-thumbnail" >');
 	}
 	else{
@@ -91,7 +91,7 @@ $('.pin_class').change(function(){
 
 function show_hand_shaddow(){
 	
-	console.log("Here!@@#!@#");
+	//console.log("Here!@@#!@#");
 	//Get vars from url
 	var url_query = location.search;
 	url_query = url_query.substring(1);

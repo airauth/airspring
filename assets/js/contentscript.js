@@ -3,7 +3,7 @@ chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
     
   
     if (response.site == "facebook") {
-        console.log('facebook');
+        //console.log('facebook');
         var email = document.getElementById("email");
         email.value = response.username;
         var pass = document.getElementById("pass");

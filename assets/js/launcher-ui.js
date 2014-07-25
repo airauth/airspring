@@ -56,7 +56,7 @@ jQuery(document).ready(function ($) {
 	url_query = parseQueryString(url_query);
 	if (url_query.id != null) {
 		var cookie = getOneCookie(url_query.id);
-		console.log(cookie);
+		//console.log(cookie);
 		var obj = JSON.parse(cookie);
 		//console.log(obj.u_email);
 		$('#user_logged').html('Welcome '+ obj.u_email);

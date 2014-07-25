@@ -58,8 +58,8 @@ function redirect_success (redirectURL) {
 //Listen to message from launched site
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-        console.log("tab id = ", sender.tab.id);
-        console.log("tab url = ", sender.tab.url);
+        //console.log("tab id = ", sender.tab.id);
+        //console.log("tab url = ", sender.tab.url);
         //check that message from launched site came from the correct site
         if (request.greeting == "hello" && sender.tab.id == opened_window_id){
             opened_window_id = null;
@@ -81,7 +81,7 @@ function exec_launch(url) {
 
 function launchpage(password, email, site, a_key, u_hash){
     
-    console.log(password, email, site, a_key, u_hash);
+    //console.log(password, email, site, a_key, u_hash);
     
     
     //convert u_hash object to string
@@ -95,7 +95,7 @@ function launchpage(password, email, site, a_key, u_hash){
     var password_decrypted = CryptoJS.AES.decrypt(password,u_hash_string, { format: JsonFormatter });
     var email_string = email_decrypted.toString(CryptoJS.enc.Utf8);
     var password_string = password_decrypted.toString(CryptoJS.enc.Utf8);
-    console.log(password_string, email_string, site, a_key, u_hash);
+    //console.log(password_string, email_string, site, a_key, u_hash);
     //console.log(decrypted.toString(CryptoJS.enc.Utf8));
     launch_username = email_string;
     launch_password = password_string;

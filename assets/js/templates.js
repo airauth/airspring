@@ -26,7 +26,7 @@ $.ajax({
                     var index = keys.indexOf(resData.result[i]);
                     
                     if (index != -1 ) {
-                        console.log("here");
+                        //console.log("here");
                         deleteCookie('_airauth_'+ids[index]);
                     }
                     var cookie_user_data = getCookies();
