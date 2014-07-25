@@ -31,10 +31,15 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputPassword" class="col-lg-4 control-label">Air.Auth Password</label>
+                  <label for="inputPassword" class="col-lg-4 control-label">Air.Auth Password </label>
                   <div class="col-lg-4">
                     <input type="password" class="form-control register_password_class" id="inputPassword" name="password" placeholder="Password" autocomplete="off" required="true" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDhss3LcOZQAAAU5JREFUOMvdkzFLA0EQhd/bO7iIYmklaCUopLAQA6KNaawt9BeIgnUwLHPJRchfEBR7CyGWgiDY2SlIQBT/gDaCoGDudiy8SLwkBiwz1c7y+GZ25i0wnFEqlSZFZKGdi8iiiOR7aU32QkR2c7ncPcljAARAkgckb8IwrGf1fg/oJ8lRAHkR2VDVmOQ8AKjqY1bMHgCGYXhFchnAg6omJGcBXEZRtNoXYK2dMsaMt1qtD9/3p40x5yS9tHICYF1Vn0mOxXH8Uq/Xb389wff9PQDbQRB0t/QNOiPZ1h4B2MoO0fxnYz8dOOcOVbWhqq8kJzzPa3RAXZIkawCenHMjJN/+GiIqlcoFgKKq3pEMAMwAuCa5VK1W3SAfbAIopum+cy5KzwXn3M5AI6XVYlVt1mq1U8/zTlS1CeC9j2+6o1wuz1lrVzpWXLDWTg3pz/0CQnd2Jos49xUAAAAASUVORK5CYII=); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;"> 
-                    <span id="help-password" class="help-block"></span>
+                    <span id="help-password" class="help-block"></span> 
+                  </div>
+                  <div class="col-md-1" style="margin-left: -40px;">
+                    <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#passwordModal">
+                      <span class="glyphicon glyphicon-question-sign"></span> 
+                    </button>
                   </div>
                 </div>
                 <div class="form-group">
@@ -161,6 +166,11 @@
                       <option>L-1-[1-0-0-0-0]</option>
                     </select>
                   </div>
+                  <div class="col-md-1" style="margin-left: -40px;">
+                    <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#pinModal">
+                      <span class="glyphicon glyphicon-question-sign"></span> 
+                    </button>
+                  </div>
                 </div>
                 <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
                 <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -233,6 +243,47 @@
     <script src="assets/js/messages.js"></script>
     <!--<script src="assets/js/registration.js"></script>-->
     <script src="assets/js/leaptrainer.js"></script>
-    <script src="assets/js/reg-ui.js"></script>
+    <script src="assets/js/reg-ui.js"></script> 
+    
+    <!-- Modal -->
+    <div class="modal fade" id="pinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Air.Auth Pin </h4>
+          </div>
+          <div class="modal-body" style="text-align: left;">
+            Your Air.Auth pin will be used in step one of your bio-authentication. It is a four digit pin, which you express using your hands. <br><br>
+            The naming convention works like this, using R-3-[0 1 1 0 0] as an example: <br><br>
+            1. R -> You do this pose with your right hand (L is for Left)<br>
+            2. 3 -> This is the number of fingers you will be holding up<br>
+            3. [0 1 1 0 0] -> Each digit represents a finger. For your right hand, the digit on the far left is your thumb, while the digit on the far right is your pinky. This is mirrored for your left hand. A '1' represents an extended finger, while a '0' represents a hidden finger. In the example the thumb, ring, and pinky are hidden. Leaving only the index and middle extended (making a peace sign).<br><br>
+            Confused? Select a pose from the dropdown and helpful picture will appear to show you which pose you selected. 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Air.Auth Password </h4>
+          </div>
+          <div class="modal-body">
+            Use a combination of capital letter and numbers. The stronger your master password is the more secure your Air.Auth account will be. 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
+          </div>
+        </div>
+      </div>
+    </div>
+        
   </body>
 </html>
