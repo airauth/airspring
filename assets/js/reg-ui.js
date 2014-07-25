@@ -487,37 +487,37 @@ function show_hand_shaddow(){
               case "5 Fingers Not Showing":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Too Far Right":
+              case "Move Left":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Too Far Left":
+              case "Move Right":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Too High":
+              case "Lower Hand":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Too Low":
+              case "Raise Hand":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Too Far From Body":
+              case "Move Back":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;          
-              case "Hand Too Close To Body":
+              case "Move Forward":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Fingers Not Straight Enough":
+              case "Extend Fingers":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Is Not Flat, Rolled Left":
+              case "Rotate Right":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Is Not Flat, Rolled Right":
+              case "Rotate Left":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Is Not Flat, Pitched Backwards":
+              case "Tilt Forward":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;
-              case "Hand Is Not Flat, Pitched Forwards":
+              case "Tilt Backwards":
                   show_message("hand-alerts", 'warning', ret[0]);
                   break;              
               case "No Hand After Check":
