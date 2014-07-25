@@ -152,8 +152,25 @@ $('#user-registration').submit(function() {
 
 // User Login
 $('#user-login').submit(function() {
-    var data = $('#user-login').serialize();
+    var data = {}; // $('#user-login').serialize();
+       
+    var cookie_user_data = getCookies();
+              var user_ids = [];
+              var auth_ids = [];
+              // Now Parse Object Data 
+              for (var key in cookie_user_data) {
+                  var obj = cookie_user_data[key];
+                  user_ids.push(obj.id);
+                  auth_ids.push(obj.a_id);
+              };
+    console.log(auth_ids);
     // Get registration form data
+    data["user_ids"]=user_ids;
+    data["email"]=$('#inputEmail').val();
+    data["password"]=$('#inputPassword').val();
+    data["auth_ids"]=auth_ids;
+    
+    //console.log(form_data);
     var url = "http://airauth.cloudnode.co/api/user/login";
           $.ajax({ 
               url: url
@@ -163,13 +180,19 @@ $('#user-login').submit(function() {
             },
 
             success: function(resData) {
+                  console.log('resdata = ',resData);
                   if (resData.valid) {
                             // console.log(resData);
-                            var test = resData.u_hash;
-                            console.log('test',test);
+                            if (resData.duplicate_ids.length != 0) {
+                                          for(var index = 0; index < resData.duplicate_ids.length; index++){
+                                                        console.log('delete cookie _airauth_'+resData.duplicate_ids[index]);
+                                                        deleteCookie("_airauth_"+resData.duplicate_ids[index]);
+                                          }
+                                          
+                            }
                             createCookie(
                                          '_airauth_'+resData.u_id,
-                                         '{"a_id": "'+resData.a_id+'", "u_hash": '+test+', "u_email": "'+resData.u_email+'", "id": "'+resData.u_id+'"}',
+                                         '{"a_id": "'+resData.a_id+'", "u_hash": '+resData.u_hash+', "u_email": "'+resData.u_email+'", "id": "'+resData.u_id+'"}',
                                          7
                             );
                             // Now Redirect to scan 
@@ -179,7 +202,7 @@ $('#user-login').submit(function() {
              },
 
             error: function(error) {
-              console.log(error.responseJSON.valid); 
+              console.log(error.responseJSON); 
                if (!error.responseJSON.valid) {
                             $('.login-message').addClass('alert-danger').html('Invalid username or password!'); 
                             $('.login-message').show(); 
@@ -192,7 +215,7 @@ $('#user-login').submit(function() {
           
               
     
-    console.log($('#user-login').serialize());
+    //console.log($('#user-login').serialize());
     return false;
 
 });
