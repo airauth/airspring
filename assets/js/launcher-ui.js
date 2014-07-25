@@ -250,7 +250,8 @@ jQuery(document).ready(function ($) {
 								       '{"token": "'+idData.token+'"}',
 								       0.00964444
 							);
-							//console.log(idData);
+							console.log(idData);
+							console.log(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
 							show_message("hand-alerts", 'success', 'Launching&nbsp;&nbsp;'+resData.result[0].name+'<br>with gesture&nbsp;&nbsp;'+gestureName);
 							launchpage(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
 									    

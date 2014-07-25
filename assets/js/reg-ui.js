@@ -59,11 +59,15 @@ if (url_query.id != null) {
         //$('#user_logged').html('Welcome '+ obj.u_email);
 }
 if (url_query.message == 1) {
-        $('#fade_message').html('Something went wrong. Please try again.')
+        $('#fade_message').html('Something went wrong. Please try again.');
         //console.log('message=',url_query.message);
         fadeOutAlert();
 }else if (url_query.message == 2) {
-        $('#fade_message').html('Something went wrong. Please try again.')
+        $('#fade_message').html('Something went wrong. Please try again.');
+        //console.log('message=',url_query.message);
+        fadeOutAlert();
+}else if (url_query.message == 79) {
+        $('#fade_message').html('Email already exists in Air.Auth. Please use a different email address or <a href="/login.html">login</a>');
         //console.log('message=',url_query.message);
         fadeOutAlert();
 }else{

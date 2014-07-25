@@ -140,6 +140,12 @@ $('#user-registration').submit(function() {
              },
 
             error: function(error) {
+              //console.log(error);
+              if (error.responseJSON.code == 79) {
+                            //console.log('here');
+                            var redirectURL = "chrome-extension://"+location.host+"/register.html?message=79";
+                            chrome.extension.sendRequest({redirect: redirectURL});     
+              }
                //console.log(error.responseText);
              },
           });
