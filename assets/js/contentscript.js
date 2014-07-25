@@ -8,7 +8,7 @@ chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
         email.value = response.username;
         var pass = document.getElementById("pass");
         pass.value = response.password;
-        document.getElementById('u_0_n').click()
+        document.getElementById('loginbutton').click()
     }
     if (response.site == "gmail") {
         var email = document.getElementById("Email");
