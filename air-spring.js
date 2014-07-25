@@ -16,37 +16,37 @@ function auth_ready(frame, count) {
 				ret = ["5 Fingers Not Showing", 0, 0];
 			}
 			else if (hand.palmPosition[0] > 50) {
-				ret = ["Hand Too Far Right", 0, 0];
+				ret = ["Move Left", 0, 0];
 			}
 			else if (hand.palmPosition[0] < -50) {
-				ret = ["Hand Too Far Left", 0, 0];
+				ret = ["Move Right", 0, 0];
 			}
 			else if (hand.palmPosition[1] > 155) {
-				ret = ["Hand Too High", 0, 0];
+				ret = ["Lower Hand", 0, 0];
 			}
 			else if (hand.palmPosition[1] < 135) {
-				ret = ["Hand Too Low", 0, 0];
+				ret = ["Raise Hand", 0, 0];
 			}
 			else if (hand.palmPosition[2] < -50) {
-				ret = ["Hand Too Far From Body", 0, 0];
+				ret = ["Move Back", 0, 0];
 			}
 			else if (hand.palmPosition[2] > 50) {
-				ret = ["Hand Too Close To Body", 0, 0];
+				ret = ["Move Forward", 0, 0];
 			}
 			else if(hand.grabStrength > 0.01) {
-				ret = ["Fingers Not Straight Enough", 0, 0];
+				ret = ["Extend Fingers", 0, 0];
 			}
 			else if (hand.roll() > 0.15) {
-				ret = ["Hand Is Not Flat, Rolled Left", 0, 0];
+				ret = ["Rotate Right", 0, 0];
 			}
 			else if (hand.roll() < -0.15) {
-				ret = ["Hand Is Not Flat, Rolled Right", 0, 0];
+				ret = ["Rotate Left", 0, 0];
 			}
 			else if (hand.pitch() > 0.15) {
-				ret = ["Hand Is Not Flat, Pitched Backwards", 0, 0];
+				ret = ["Tilt Forward", 0, 0];
 			}
 			else if (hand.pitch() < -0.15) {
-				ret = ["Hand Is Not Flat, Pitched Forwards", 0, 0];
+				ret = ["Tilt Backwards", 0, 0];
 			}
 		}
 		else {
