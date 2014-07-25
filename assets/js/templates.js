@@ -70,5 +70,5 @@ for (var key in cookie_user_data) {
 
 var navbar__launcher_html = new EJS({url: '../../templates/navbar-launcher.ejs'}).render(users); 
 $('#navbar_launcher').html(navbar__launcher_html);
-var navbar__recorder_html = new EJS({url: '../../templates/navbar-recorder.ejs'});
-$('#navbar_recorder').html(navbar__recorder_html.text);
+var navbar__register_html = new EJS({url: '../../templates/navbar-register.ejs'});
+$('#navbar_register').html(navbar__register_html.text);

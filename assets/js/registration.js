@@ -1,5 +1,4 @@
 // User Registration 
-
 deleteDB('hand_data');
 
 var progressbar = $('.progress-bar');
