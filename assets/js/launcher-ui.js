@@ -688,6 +688,7 @@ jQuery(document).ready(function ($) {
 	trainer.fromJSON(F_1_L_00010);
 	trainer.fromJSON(F_1_L_00100);
 	trainer.fromJSON(F_1_L_10000);
+	trainer.fromJSON(C_2_L_00110);
 	
 	
 	});
