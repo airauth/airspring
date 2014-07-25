@@ -250,8 +250,8 @@ jQuery(document).ready(function ($) {
 								       '{"token": "'+idData.token+'"}',
 								       0.00964444
 							);
-							console.log(idData);
-							console.log(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
+							//console.log(idData);
+							//console.log(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
 							show_message("hand-alerts", 'success', 'Launching&nbsp;&nbsp;'+resData.result[0].name+'<br>with gesture&nbsp;&nbsp;'+gestureName);
 							launchpage(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
 									    
@@ -675,7 +675,7 @@ jQuery(document).ready(function ($) {
 	//trainer.fromJSON(F_2_R_00011);
 	trainer.fromJSON(F_1_R_01000);
 	//trainer.fromJSON(F_1_R_00001);
-	trainer.fromJSON(F_1_R_00100);
+	//trainer.fromJSON(F_1_R_00100);
 	trainer.fromJSON(F_L_THUMB_RIGHT);
 	trainer.fromJSON(F_L_THUMB_LEFT);
 	trainer.fromJSON(F_5_L_11111);
@@ -686,7 +686,7 @@ jQuery(document).ready(function ($) {
 	trainer.fromJSON(F_2_L_00110);
 	//trainer.fromJSON(F_2_L_11000);
 	trainer.fromJSON(F_2_L_00011);
-	trainer.fromJSON(F_1_L_00010);
+	//trainer.fromJSON(F_1_L_00010);
 	trainer.fromJSON(F_1_L_00100);
 	//trainer.fromJSON(F_1_L_10000);
 	

@@ -683,7 +683,7 @@ jQuery(document).ready(function ($) {
 	//trainer.fromJSON(F_2_R_00011);
 	trainer.fromJSON(F_1_R_01000);
 	//trainer.fromJSON(F_1_R_00001);
-	trainer.fromJSON(F_1_R_00100);
+	//trainer.fromJSON(F_1_R_00100);
 	trainer.fromJSON(F_L_THUMB_RIGHT);
 	trainer.fromJSON(F_L_THUMB_LEFT);
 	trainer.fromJSON(F_5_L_11111);
@@ -694,7 +694,7 @@ jQuery(document).ready(function ($) {
 	trainer.fromJSON(F_2_L_00110);
 	//trainer.fromJSON(F_2_L_11000);
 	trainer.fromJSON(F_2_L_00011);
-	trainer.fromJSON(F_1_L_00010);
+	//trainer.fromJSON(F_1_L_00010);
 	trainer.fromJSON(F_1_L_00100);
 	//trainer.fromJSON(F_1_L_10000);
 	
