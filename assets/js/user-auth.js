@@ -184,7 +184,7 @@ $('#user-login').submit(function() {
                   console.log('resdata = ',resData);
                   if (resData.valid) {
                             // console.log(resData);
-                            if (resData.duplicate_ids.length != 0) {
+                            if (typeof resData.duplicate_ids != "undefined") {
                                           for(var index = 0; index < resData.duplicate_ids.length; index++){
                                                         console.log('delete cookie _airauth_'+resData.duplicate_ids[index]);
                                                         deleteCookie("_airauth_"+resData.duplicate_ids[index]);

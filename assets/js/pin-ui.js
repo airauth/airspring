@@ -162,7 +162,7 @@ jQuery(document).ready(function ($) {
 	 */
 	function updateDimensions() {
 
-		windowHeight 		= main.innerHeight();
+		windowHeight 		= main.innerHeight()-350;
 		
 		windowWidth 		= virtualhand.innerWidth();
 
