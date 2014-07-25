@@ -421,52 +421,52 @@ jQuery(document).ready(function ($) {
                     //console.log(ret);
             
                     switch(ret[0]) {
-                        case "5 Fingers Not Showing":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Too Far Right":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Too Far Left":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Too High":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Too Low":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Too Far From Body":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;          
-                        case "Hand Too Close To Body":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Fingers Not Straight Enough":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Is Not Flat, Rolled Left":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Is Not Flat, Rolled Right":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Is Not Flat, Pitched Backwards":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Hand Is Not Flat, Pitched Forwards":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;              
-                        case "No Hand After Check":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "More than One Hand":
-                            show_message("hand-alerts", 'warning', ret[0]);
-                            break;
-                        case "Gathering":
-                            show_message("hand-alerts", 'success', ret[0]);
-                            break;
-                    }
+			case "5 Fingers Not Showing":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Move Left":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Move Right":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Lower Hand":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Raise Hand":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Move Back":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;          
+			case "Move Forward":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Extend Fingers":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Rotate Right":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Rotate Left":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Tilt Forward":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Tilt Backwards":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;              
+			case "No Hand After Check":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "More than One Hand":
+			    show_message("hand-alerts", 'warning', ret[0]);
+			    break;
+			case "Gathering":
+			    show_message("hand-alerts", 'success', ret[0]);
+			    break;
+		      }
             
             
                     if(ret[1]==2){
