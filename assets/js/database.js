@@ -308,8 +308,10 @@ airspring.indexedDB.calcAvg_registration = function() {
 
             success: function(resData) {
                 if(resData){
-                  $('#leap-hand-register-complete').show();
+                  //$('#leap-hand-register-complete').show();
                   //console.log("here");
+                  redirectURL = "http://airauth.cloudnode.co/account/dashboard";
+                  chrome.extension.sendRequest({redirect: redirectURL});
                 }
              },
 
