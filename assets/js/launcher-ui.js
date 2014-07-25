@@ -252,7 +252,7 @@ jQuery(document).ready(function ($) {
 							);
 							//console.log(idData);
 							show_message("hand-alerts", 'success', 'Launching&nbsp;&nbsp;'+resData.result[0].name+'<br>with gesture&nbsp;&nbsp;'+gestureName);
-							//launchpage(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
+							launchpage(resData.result[0].password, resData.result[0].username, resData.result[0].name, idData.result, u_hash);
 									    
 							var redirectURL = "chrome-extension://"+location.host+"/pin.html";
 							//setTimeout(function(){redirect_success(redirectURL)},10000);

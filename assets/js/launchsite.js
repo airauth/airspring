@@ -65,9 +65,9 @@ chrome.runtime.onMessage.addListener(
             opened_window_id = null;
             sendResponse({username: launch_username, password: launch_password, site: launch_site});
             launch_username = null;
-            launch_password = null;
+            launch_password = null; 
             var redirectURL = "chrome-extension://"+location.host+"/pin.html";
-            setTimeout(function(){redirect_success(redirectURL)},1000);
+            setTimeout(function(){redirect_success(redirectURL)},10000);
         }
 });
 
