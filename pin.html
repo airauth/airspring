@@ -24,10 +24,16 @@
 				    	<div id="pin_3" class="well col-lg-2 col-lg-offset-1" style="margin-bottom: 0px; font-size: 30px;">_</div>
 				    	<div id="pin_4" class="well col-lg-2 col-lg-offset-1" style="margin-bottom: 0px; font-size: 30px;">_</div>
 				    </div>
+				    <div class="col-lg-1">
+				    	<br>
+					<button class="btn btn-default btn-lg" data-toggle="modal" data-target="#pincodeHelper">
+						<span class="glyphicon glyphicon-question-sign"></span
+					</button>
+				    </div>
 				    <div class="col-lg-4 col-lg-offset-4">
 				    	<br>
 				    	<span id="pin_pose_display" style="color: #555555; font-size: 24px;"></span>
-				    </div>
+				    </div> 
 				</div>
 				<div id="render-area" style="width: 100%; height: 100%"></div>
 			
@@ -39,6 +45,31 @@
 		
 
 		
+		</div>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="pincodeHelper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			<h4 class="modal-title" id="myModalLabel">Air.Auth Pin Entry</h4>
+		      </div>
+		      <div class="modal-body">
+			<h4>Enter your pin as a series of poses. Ensure your hand stays as still as possible with your non-extended fingers tight to your palm.</h4> <br>
+			<h4>If you make a mistake you can correct the sequence by performing a "Thumb Left Pose". This can be seen in the image below: </h4>
+			<img src="assets/img/hands/thumb_left.png" width="125px" height="115px" /> <br>
+			<br>
+			<h4>To submit your pin perform a "Thumb Right Pose". This can be seen in the image below: </h4> 
+			<img src="assets/img/hands/thumb_right.png" width="125px" height="115px" /> <br> 
+			
+			
+		      </div>
+		      <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
 		</div>
 		
 	</body>
