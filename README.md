@@ -1,8 +1,4 @@
 Air.Spring
 =========
 
-Leap Motion Powered Keychain for Chrome 
-
-
-
-gkafs;kgja
+Leap Motion Powered Keychain for Chrome
